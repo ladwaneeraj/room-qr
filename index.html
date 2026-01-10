@@ -3,11 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cibara Comforts - Room Information</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      rel="stylesheet"
-    />
+    <title>Cibara Comforts - Guest Info</title>
     <style>
       * {
         margin: 0;
@@ -15,1052 +11,581 @@
         box-sizing: border-box;
       }
 
-      :root {
-        --primary: #0066cc;
-        --secondary: #0099ff;
-        --accent: #003d99;
-        --dark: #001a4d;
-        --light: #f0f4ff;
-        --white: #ffffff;
-        --danger: #ff4444;
-        --success: #00aa44;
-      }
-
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f4f8;
+        color: #2d3748;
         line-height: 1.6;
-        color: var(--dark);
-        background: var(--light);
-        overflow-x: hidden;
       }
 
-      /* Header */
-      header {
-        background: linear-gradient(
-          135deg,
-          var(--primary) 0%,
-          var(--secondary) 100%
-        );
-        color: var(--white);
-        padding: 15px;
+      .container {
+        max-width: 480px;
+        margin: 0 auto;
+        background: white;
+        min-height: 100vh;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        color: white;
+        padding: 30px 20px 20px;
         text-align: center;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
       }
 
-      header h1 {
-        font-size: 24px;
+      .hero h1 {
+        font-size: 1.6em;
         margin-bottom: 5px;
+        font-weight: 600;
       }
 
-      header p {
-        font-size: 12px;
+      .hero p {
+        font-size: 0.9em;
         opacity: 0.9;
       }
 
-      /* Main Container */
-      .container {
-        max-width: 100%;
-        padding: 15px;
-        margin: 0 auto;
+      .room-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
       }
 
-      /* Quick Actions Section */
+      .content {
+        padding: 20px 16px;
+      }
+
+      .section {
+        margin-bottom: 25px;
+      }
+
+      .section-title {
+        font-size: 1.1em;
+        color: #1e40af;
+        margin-bottom: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
       .quick-actions {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
+        gap: 10px;
         margin-bottom: 20px;
       }
 
       .action-btn {
-        background: linear-gradient(
-          135deg,
-          var(--primary) 0%,
-          var(--secondary) 100%
-        );
-        color: var(--white);
-        border: none;
-        padding: 20px;
-        border-radius: 12px;
-        font-size: 14px;
-        cursor: pointer;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
-        font-weight: 600;
-        min-height: 44px;
-      }
-
-      .action-btn i {
-        font-size: 28px;
+        justify-content: center;
+        padding: 16px 10px;
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        text-decoration: none;
+        color: #2d3748;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
       }
 
       .action-btn:active {
-        opacity: 0.9;
-        box-shadow: 0 2px 6px rgba(0, 102, 204, 0.3);
+        transform: scale(0.97);
       }
 
-      .action-btn.danger {
-        background: var(--danger);
-        box-shadow: 0 4px 12px rgba(255, 68, 68, 0.3);
+      .action-btn.primary {
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        color: white;
+        border: none;
       }
 
-      .action-btn.danger:active {
-        box-shadow: 0 2px 6px rgba(255, 68, 68, 0.3);
+      .action-btn.secondary {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border: none;
       }
 
-      /* Section */
-      .section {
-        background: var(--white);
-        border-radius: 12px;
-        padding: 15px;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      .action-btn .icon {
+        font-size: 1.8em;
+        margin-bottom: 6px;
       }
 
-      .section-title {
-        font-size: 16px;
-        color: var(--primary);
-        margin-bottom: 12px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+      .action-btn .label {
+        font-size: 0.75em;
+        opacity: 0.85;
+        margin-bottom: 3px;
       }
 
-      .section-title i {
-        font-size: 20px;
-        color: var(--secondary);
-      }
-
-      /* Info Items */
-      .info-item {
-        padding: 12px;
-        margin-bottom: 10px;
-        background: var(--light);
-        border-radius: 8px;
-        border-left: 4px solid var(--secondary);
-      }
-
-      .info-item-label {
-        font-size: 12px;
-        color: var(--primary);
+      .action-btn .number {
+        font-size: 0.95em;
         font-weight: 600;
-        margin-bottom: 4px;
-        text-transform: uppercase;
       }
 
-      .info-item-value {
-        font-size: 16px;
+      .wifi-section {
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .wifi-section h3 {
+        font-size: 1.1em;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      .wifi-password-box {
+        background: white;
+        color: #2d3748;
+        padding: 16px;
+        border-radius: 10px;
+        margin-top: 12px;
+      }
+
+      .wifi-password {
+        font-family: "Courier New", monospace;
+        font-size: 1.4em;
         font-weight: 700;
-        color: var(--dark);
-        word-break: break-all;
+        letter-spacing: 2px;
+        margin: 8px 0;
+        user-select: all;
+        color: #2563eb;
       }
 
-      .info-item-sub {
-        font-size: 12px;
-        color: #666;
-        margin-top: 4px;
+      .copy-btn {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-size: 0.9em;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 12px;
+        transition: all 0.2s ease;
       }
 
-      /* Amenities Grid */
+      .copy-btn:active {
+        transform: scale(0.97);
+        background: #1e40af;
+      }
+
+      .copy-feedback {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #10b981;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        font-size: 0.9em;
+      }
+
+      .copy-feedback.show {
+        opacity: 1;
+      }
+
       .amenities-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
         gap: 10px;
       }
 
       .amenity {
-        background: var(--light);
-        padding: 12px;
-        border-radius: 8px;
         text-align: center;
-        border: 2px solid var(--light);
+        padding: 12px 8px;
+        background: #f8fafc;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s ease;
       }
 
-      .amenity i {
-        font-size: 28px;
-        color: var(--secondary);
-        display: block;
+      .amenity:active {
+        background: #e2e8f0;
+      }
+
+      .amenity .icon {
+        font-size: 1.5em;
         margin-bottom: 6px;
       }
 
-      .amenity-name {
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--primary);
+      .amenity .name {
+        font-size: 0.75em;
+        color: #64748b;
+        line-height: 1.3;
       }
 
-      /* WiFi Copy Section */
-      .wifi-copy-section {
-        background: linear-gradient(
-          135deg,
-          var(--primary) 0%,
-          var(--secondary) 100%
-        );
-        color: var(--white);
-        padding: 12px;
-        border-radius: 8px;
-        text-align: center;
-      }
-
-      .wifi-copy-label {
-        font-size: 12px;
-        opacity: 0.9;
-        margin-bottom: 8px;
-      }
-
-      .wifi-password-box {
-        background: rgba(255, 255, 255, 0.2);
-        padding: 10px;
-        border-radius: 6px;
-        font-family: monospace;
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        letter-spacing: 1px;
-      }
-
-      .copy-password-btn {
-        background: var(--white);
-        color: var(--primary);
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        font-size: 13px;
-        width: 100%;
-        min-height: 44px;
-      }
-
-      .copy-password-btn:active {
-        opacity: 0.8;
-      }
-
-      /* House Rules */
       .rules-list {
         list-style: none;
       }
 
-      .rules-list li {
-        padding: 10px 12px;
+      .rule {
+        background: #f8fafc;
+        padding: 12px;
         margin-bottom: 8px;
-        background: var(--light);
-        border-radius: 6px;
-        border-left: 4px solid var(--secondary);
-        font-size: 13px;
+        border-radius: 8px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        font-size: 0.9em;
+        border-left: 3px solid #2563eb;
       }
 
-      .rules-list li i {
-        color: var(--secondary);
-        margin-right: 8px;
-        font-size: 14px;
+      .rule .icon {
+        font-size: 1.2em;
+        flex-shrink: 0;
       }
 
-      /* Emergency/Help Section */
-      .help-section {
-        background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
-        color: var(--white);
-        padding: 15px;
+      .rule .text {
+        flex: 1;
+        line-height: 1.5;
+      }
+
+      .feature-cards {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .feature-card {
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        color: white;
+        padding: 16px;
         border-radius: 12px;
-        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: block;
       }
 
-      .help-section h3 {
-        font-size: 14px;
-        margin-bottom: 10px;
+      .feature-card:active {
+        transform: scale(0.98);
+      }
+
+      .feature-card h4 {
+        font-size: 1em;
+        margin-bottom: 6px;
         display: flex;
         align-items: center;
         gap: 8px;
+        font-weight: 600;
       }
 
-      .help-section p {
-        font-size: 12px;
-        margin-bottom: 8px;
+      .feature-card p {
+        opacity: 0.95;
+        line-height: 1.4;
+        font-size: 0.85em;
       }
 
-      .help-buttons {
+      .feature-card.whatsapp {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      }
+
+      .feature-card.checkout {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      }
+
+      .feature-card.menu {
+        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+      }
+
+      .emergency-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
       }
 
-      .help-btn {
-        background: var(--white);
-        color: #ff6b6b;
-        border: none;
-        padding: 10px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        font-size: 12px;
-        min-height: 44px;
-      }
-
-      .help-btn i {
-        margin-right: 4px;
-      }
-
-      /* Modal */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-      }
-
-      .modal-content {
-        background: var(--white);
-        margin: 15% auto;
-        padding: 25px;
-        border-radius: 15px;
-        width: 85%;
-        max-width: 350px;
+      .emergency-btn {
+        background: #dc2626;
+        color: white;
+        padding: 14px;
+        border-radius: 10px;
+        text-decoration: none;
         text-align: center;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      }
-
-      .modal-icon {
-        font-size: 50px;
-        color: var(--secondary);
-        margin-bottom: 15px;
-      }
-
-      .modal-content h2 {
-        color: var(--primary);
-        margin-bottom: 10px;
-        font-size: 18px;
-      }
-
-      .modal-content p {
-        color: #666;
-        margin-bottom: 20px;
-        font-size: 13px;
-      }
-
-      .modal-btn {
-        background: var(--primary);
-        color: var(--white);
+        transition: all 0.2s ease;
         border: none;
-        padding: 12px 25px;
-        border-radius: 6px;
-        cursor: pointer;
+        font-size: 0.9em;
+      }
+
+      .emergency-btn:active {
+        transform: scale(0.97);
+        background: #b91c1c;
+      }
+
+      .emergency-btn .icon {
+        font-size: 1.6em;
+        margin-bottom: 6px;
+        display: block;
+      }
+
+      .emergency-btn .label {
         font-weight: 600;
-        font-size: 13px;
-        min-height: 44px;
+        font-size: 0.85em;
       }
 
-      .modal-btn:active {
-        opacity: 0.8;
-      }
-
-      /* Footer */
-      footer {
-        background: var(--dark);
-        color: var(--white);
+      .footer {
+        background: #1e293b;
+        color: white;
+        padding: 24px 20px;
         text-align: center;
-        padding: 15px;
-        font-size: 11px;
-        margin-top: 20px;
+        font-size: 0.85em;
       }
 
-      footer p {
-        margin-bottom: 8px;
+      .footer p {
+        margin-bottom: 6px;
+        opacity: 0.9;
       }
 
-      /* Mobile Responsive */
-      @media (max-width: 480px) {
-        body {
-          font-size: 14px;
-        }
-
-        header h1 {
-          font-size: 20px;
-        }
-
+      @media (max-width: 600px) {
         .container {
-          padding: 12px;
+          max-width: 100%;
         }
-
-        .quick-actions {
-          gap: 10px;
-          margin-bottom: 15px;
-        }
-
-        .action-btn {
-          padding: 18px;
-          font-size: 13px;
-          border-radius: 10px;
-        }
-
-        .action-btn i {
-          font-size: 26px;
-        }
-
-        .section {
-          padding: 12px;
-          margin-bottom: 12px;
-        }
-
-        .section-title {
-          font-size: 15px;
-          margin-bottom: 10px;
-        }
-
-        .info-item {
-          padding: 10px;
-          margin-bottom: 8px;
-        }
-
-        .info-item-label {
-          font-size: 11px;
-        }
-
-        .info-item-value {
-          font-size: 15px;
-        }
-
-        .amenities-grid {
-          grid-template-columns: 1fr 1fr;
-          gap: 8px;
-        }
-
-        .amenity {
-          padding: 10px;
-        }
-
-        .amenity i {
-          font-size: 24px;
-        }
-
-        .amenity-name {
-          font-size: 11px;
-        }
-
-        .wifi-password-box {
-          font-size: 16px;
-        }
-
-        .copy-password-btn {
-          padding: 9px 15px;
-          font-size: 12px;
-        }
-
-        .rules-list li {
-          padding: 9px 10px;
-          margin-bottom: 6px;
-          font-size: 12px;
-        }
-
-        .modal-content {
-          margin: 25% auto;
-          padding: 20px;
-          width: 90%;
-        }
-
-        footer {
-          font-size: 10px;
-          padding: 12px;
-        }
-      }
-
-      @media (max-width: 360px) {
-        header h1 {
-          font-size: 18px;
-        }
-
-        .quick-actions {
-          grid-template-columns: 1fr 1fr;
-        }
-
-        .action-btn {
-          padding: 15px;
-          font-size: 12px;
-        }
-
-        .action-btn i {
-          font-size: 22px;
-        }
-      }
-
-      /* Landscape */
-      @media (max-height: 600px) and (orientation: landscape) {
-        header {
-          padding: 10px;
-        }
-
-        header h1 {
-          font-size: 18px;
-          margin-bottom: 2px;
-        }
-
-        .container {
-          padding: 10px;
-        }
-
-        .section {
-          padding: 10px;
-          margin-bottom: 10px;
-        }
-
-        .quick-actions {
-          gap: 8px;
-          margin-bottom: 10px;
-        }
-      }
-
-      /* No scroll on full page */
-      html {
-        overflow-x: hidden;
-        max-width: 100vw;
-      }
-
-      body {
-        width: 100%;
-        min-height: 100vh;
-      }
-
-      /* Form inputs */
-      input,
-      textarea,
-      select {
-        -webkit-appearance: none;
-        appearance: none;
-      }
-
-      textarea {
-        font-family: inherit;
       }
     </style>
   </head>
   <body>
-    <!-- Header -->
-    <header>
-      <h1>🏨 CIBARA COMFORTS</h1>
-      <p>Room Information & Services</p>
-    </header>
+    <div class="copy-feedback" id="copyFeedback">✓ Password copied!</div>
 
-    <!-- Main Container -->
     <div class="container">
-      <!-- Quick Action Buttons -->
-      <div class="quick-actions">
-        <button class="action-btn" onclick="makeCall('9482831381')">
-          <i class="fas fa-phone"></i>
-          Call Service
-        </button>
-        <button class="action-btn" onclick="makeCall('08102297384')">
-          <i class="fas fa-phone-alt"></i>
-          Reception
-        </button>
+      <div class="hero">
+        <h1>🏨 Cibara Comforts</h1>
+        <p>Welcome to Harihar</p>
       </div>
 
-      <!-- Welcome Section -->
-      <div class="section">
-        <div class="section-title">
-          <i class="fas fa-heart"></i> Welcome to Your Room
-        </div>
-        <p style="font-size: 13px; color: #666; line-height: 1.8">
-          We're delighted to have you with us! This guide contains everything
-          you need to know about your room and our services. Should you need any
-          assistance, please don't hesitate to contact us.
-        </p>
-      </div>
+      <img
+        src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=400&fit=crop"
+        alt="Hotel Room"
+        class="room-image"
+      />
 
-      <!-- WiFi Section -->
-      <div class="section">
-        <div class="section-title">
-          <i class="fas fa-wifi"></i> WiFi Connection
+      <div class="content">
+        <!-- Quick Contact -->
+        <div class="section">
+          <h3 class="section-title">📞 Contact Reception</h3>
+          <div class="quick-actions">
+            <a href="tel:9482831381" class="action-btn primary">
+              <div class="icon">📱</div>
+              <div class="label">Mobile</div>
+              <div class="number">9482831381</div>
+            </a>
+            <a href="tel:08192297384" class="action-btn secondary">
+              <div class="icon">☎️</div>
+              <div class="label">Landline</div>
+              <div class="number">08192 297384</div>
+            </a>
+          </div>
         </div>
-        <div class="info-item">
-          <div class="info-item-label">Network Name</div>
-          <div class="info-item-value">Cibara_2nd_floor</div>
-        </div>
-        <div class="wifi-copy-section">
-          <div class="wifi-copy-label">WiFi Password</div>
-          <div class="wifi-password-box" id="passwordBox">Cibara@1212</div>
-          <button class="copy-password-btn" onclick="copyPassword()">
-            <i class="fas fa-copy"></i> Copy Password
-          </button>
-        </div>
-      </div>
 
-      <!-- Room Services Section -->
-      <div class="section">
-        <div class="section-title">
-          <i class="fas fa-concierge-bell"></i> Call for Service
-        </div>
-        <div class="info-item">
-          <div class="info-item-label">24/7 Room Service</div>
-          <div class="info-item-value">9482831381</div>
-          <div class="info-item-sub">
-            For room service, complaints, or emergencies
-          </div>
-          <button
-            class="action-btn"
-            style="width: 100%; margin-top: 8px"
-            onclick="makeCall('9482831381')"
-          >
-            <i class="fas fa-phone"></i> Call Now
-          </button>
-        </div>
-        <div class="info-item">
-          <div class="info-item-label">Reception Desk</div>
-          <div class="info-item-value">08102 297384</div>
-          <div class="info-item-sub">For check-out, bookings, or inquiries</div>
-          <button
-            class="action-btn"
-            style="width: 100%; margin-top: 8px"
-            onclick="makeCall('08102297384')"
-          >
-            <i class="fas fa-phone"></i> Call Now
-          </button>
-        </div>
-      </div>
-
-      <!-- Room Amenities Section -->
-      <div class="section">
-        <div class="section-title">
-          <i class="fas fa-star"></i> Room Amenities
-        </div>
-        <div class="amenities-grid">
-          <div class="amenity">
-            <i class="fas fa-bed"></i>
-            <div class="amenity-name">Comfortable Bed</div>
-          </div>
-          <div class="amenity">
-            <i class="fas fa-wifi"></i>
-            <div class="amenity-name">High-Speed WiFi</div>
-          </div>
-          <div class="amenity">
-            <i class="fas fa-droplet"></i>
-            <div class="amenity-name">Hot Water</div>
-          </div>
-          <div class="amenity">
-            <i class="fas fa-tv"></i>
-            <div class="amenity-name">Smart TV</div>
-          </div>
-          <div class="amenity">
-            <i class="fas fa-wind"></i>
-            <div class="amenity-name">AC/Heating</div>
-          </div>
-          <div class="amenity">
-            <i class="fas fa-utensils"></i>
-            <div class="amenity-name">Room Service</div>
-          </div>
-          <div class="amenity">
-            <i class="fas fa-door-open"></i>
-            <div class="amenity-name">24-Hour Access</div>
-          </div>
-          <div class="amenity">
-            <i class="fas fa-shield"></i>
-            <div class="amenity-name">24/7 Security</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Important Information Section -->
-      <div class="section">
-        <div class="section-title">
-          <i class="fas fa-lightbulb"></i> Important Information
-        </div>
-        <div class="info-item">
-          <div class="info-item-label">Check-Out Time</div>
-          <div class="info-item-value">11:00 AM</div>
-          <div class="info-item-sub">
-            Late checkout available - contact reception
-          </div>
-        </div>
-        <div class="info-item">
-          <div class="info-item-label">Hot Water Available</div>
-          <div class="info-item-value">6:00 AM - 11:00 PM</div>
-          <div class="info-item-sub">Continuous supply during these hours</div>
-        </div>
-        <div class="info-item">
-          <div class="info-item-label">Room Temperature</div>
-          <div class="info-item-value">22-24°C (Recommended)</div>
-          <div class="info-item-sub">Use remote/thermostat to adjust</div>
-        </div>
-      </div>
-
-      <!-- House Rules Section -->
-      <div class="section">
-        <div class="section-title">
-          <i class="fas fa-list-check"></i> House Rules
-        </div>
-        <ul class="rules-list">
-          <li>
-            <i class="fas fa-moon"></i> <strong>Quiet Hours:</strong> 10 PM - 8
-            AM
-          </li>
-          <li>
-            <i class="fas fa-ban"></i> <strong>No Smoking:</strong> In rooms or
-            common areas
-          </li>
-          <li>
-            <i class="fas fa-key"></i> <strong>Keep Key Safe:</strong> Lost key
-            charges apply
-          </li>
-          <li>
-            <i class="fas fa-lock"></i> <strong>Lock Door:</strong> Always when
-            leaving room
-          </li>
-          <li>
-            <i class="fas fa-water"></i> <strong>Water:</strong> Use responsibly
-          </li>
-          <li>
-            <i class="fas fa-users"></i> <strong>Guests:</strong> Inform
-            reception if bringing guests
-          </li>
-          <li>
-            <i class="fas fa-trash"></i> <strong>Housekeeping:</strong> Do not
-            disturb sign available
-          </li>
-          <li>
-            <i class="fas fa-volume-down"></i> <strong>Noise:</strong> Keep
-            TV/music at low volume
-          </li>
-        </ul>
-      </div>
-
-      <!-- Feedback Section -->
-      <div class="section">
-        <div class="section-title">
-          <i class="fas fa-comment"></i> Share Your Feedback
-        </div>
-        <button
-          class="action-btn"
-          style="width: 100%; margin-bottom: 10px"
-          onclick="scrollToFeedback()"
-        >
-          <i class="fas fa-pen-square"></i> Send Feedback
-        </button>
-        <div style="font-size: 12px; color: #666; text-align: center">
-          Help us improve! Share your experience, suggestions, or concerns.
-        </div>
-      </div>
-
-      <!-- Emergency/Help Section -->
-      <div class="help-section">
-        <h3><i class="fas fa-triangle-exclamation"></i> Need Help?</h3>
-        <p>If you have any emergency or urgent requirement:</p>
-        <div class="help-buttons">
-          <button class="help-btn" onclick="makeCall('9482831381')">
-            <i class="fas fa-phone"></i> Call Now
-          </button>
-          <button class="help-btn" onclick="showEmergencyInfo()">
-            <i class="fas fa-info-circle"></i> More Info
-          </button>
-        </div>
-      </div>
-
-      <!-- Feedback Form -->
-      <div class="section" id="feedbackSection">
-        <div class="section-title">
-          <i class="fas fa-clipboard"></i> Guest Feedback
-        </div>
-        <form id="feedbackForm" onsubmit="handleSubmit(event)">
-          <div style="margin-bottom: 12px">
-            <label
+        <!-- WiFi Section -->
+        <div class="wifi-section">
+          <h3>🔐 WiFi Password</h3>
+          <div class="wifi-password-box">
+            <div
               style="
-                display: block;
-                font-size: 12px;
-                color: var(--primary);
-                font-weight: 600;
+                color: #64748b;
+                font-weight: 500;
                 margin-bottom: 4px;
+                font-size: 0.85em;
               "
-              >Your Name *</label
             >
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              placeholder="Enter your name"
-              style="
-                width: 100%;
-                padding: 10px;
-                border: 2px solid var(--light);
-                border-radius: 6px;
-                font-size: 14px;
-              "
-            />
+              Tap to select, then copy
+            </div>
+            <div class="wifi-password" id="wifiPassword">Cibara@1212</div>
+            <button class="copy-btn" onclick="copyPassword()">
+              📋 Copy Password
+            </button>
           </div>
+        </div>
 
-          <div style="margin-bottom: 12px">
-            <label
-              style="
-                display: block;
-                font-size: 12px;
-                color: var(--primary);
-                font-weight: 600;
-                margin-bottom: 4px;
-              "
-              >Phone Number *</label
+        <!-- Quick Services -->
+        <div class="section">
+          <h3 class="section-title">⚡ Quick Services</h3>
+          <div class="feature-cards">
+            <a href="tel:9482831381" class="feature-card">
+              <h4>🍽️ Room Service</h4>
+              <p>Order food, snacks, or beverages delivered to your room</p>
+            </a>
+            <a
+              href="https://wa.me/919482831381?text=Hi%20Cibara%20Comforts%2C%20"
+              class="feature-card whatsapp"
             >
-            <input
-              type="tel"
-              id="contact"
-              name="contact"
-              required
-              placeholder="Your phone number"
-              style="
-                width: 100%;
-                padding: 10px;
-                border: 2px solid var(--light);
-                border-radius: 6px;
-                font-size: 14px;
-              "
-            />
+              <h4>💬 WhatsApp Chat</h4>
+              <p>Message us for quick requests or questions</p>
+            </a>
+            <a href="tel:9482831381" class="feature-card checkout">
+              <h4>🧳 Checkout Request</h4>
+              <p>Call to request checkout or extend your stay</p>
+            </a>
+            <a href="tel:9482831381" class="feature-card menu">
+              <h4>🗺️ Local Guide</h4>
+              <p>Ask us about restaurants, temples & shopping spots</p>
+            </a>
           </div>
+        </div>
 
-          <div style="margin-bottom: 12px">
-            <label
-              style="
-                display: block;
-                font-size: 12px;
-                color: var(--primary);
-                font-weight: 600;
-                margin-bottom: 4px;
-              "
-              >Type *</label
-            >
-            <select
-              id="type"
-              name="type"
-              required
-              style="
-                width: 100%;
-                padding: 10px;
-                border: 2px solid var(--light);
-                border-radius: 6px;
-                font-size: 14px;
-              "
-            >
-              <option value="">Select type</option>
-              <option value="suggestion">Suggestion</option>
-              <option value="complaint">Complaint</option>
-              <option value="compliment">Compliment</option>
-              <option value="other">Other</option>
-            </select>
+        <!-- Room Amenities -->
+        <div class="section">
+          <h3 class="section-title">🛏️ Room Amenities</h3>
+          <div class="amenities-grid">
+            <div class="amenity">
+              <div class="icon">❄️</div>
+              <div class="name">AC</div>
+            </div>
+            <div class="amenity">
+              <div class="icon">🚿</div>
+              <div class="name">24/7 Hot Water</div>
+            </div>
+            <div class="amenity">
+              <div class="icon">📺</div>
+              <div class="name">TV</div>
+            </div>
+            <div class="amenity">
+              <div class="icon">📶</div>
+              <div class="name">Free WiFi</div>
+            </div>
+
+            <div class="amenity">
+              <div class="icon">🧴</div>
+              <div class="name">Toiletries</div>
+            </div>
+            <div class="amenity">
+              <div class="icon">☕</div>
+              <div class="name">Tea/Coffee</div>
+            </div>
+            <div class="amenity">
+              <div class="icon">🅿️</div>
+              <div class="name">Parking</div>
+            </div>
+            <div class="amenity">
+              <div class="icon">🧺</div>
+              <div class="name">Laundry (Chargable)</div>
+            </div>
           </div>
+        </div>
 
-          <div style="margin-bottom: 12px">
-            <label
-              style="
-                display: block;
-                font-size: 12px;
-                color: var(--primary);
-                font-weight: 600;
-                margin-bottom: 4px;
-              "
-              >Your Message *</label
-            >
-            <textarea
-              id="message"
-              name="message"
-              required
-              placeholder="Please share your feedback..."
-              style="
-                width: 100%;
-                padding: 10px;
-                border: 2px solid var(--light);
-                border-radius: 6px;
-                font-size: 14px;
-                min-height: 80px;
-                resize: vertical;
-              "
-            ></textarea>
+        <!-- House Rules -->
+        <div class="section">
+          <h3 class="section-title">📋 House Rules</h3>
+          <ul class="rules-list">
+            <li class="rule">
+              <div class="icon">🪪</div>
+              <div class="text">Valid ID required at check-in</div>
+            </li>
+            <li class="rule">
+              <div class="icon">🚭</div>
+              <div class="text">No smoking inside rooms</div>
+            </li>
+            <li class="rule">
+              <div class="icon">🎵</div>
+              <div class="text">Quiet hours: 10 PM - 7 AM</div>
+            </li>
+            <li class="rule">
+              <div class="icon">👥</div>
+              <div class="text">Visitors allowed in lobby only</div>
+            </li>
+            <li class="rule">
+              <div class="icon">🔑</div>
+              <div class="text">Lost key replacement: ₹500</div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Emergency Contacts -->
+        <div class="section">
+          <h3 class="section-title">🚨 Emergency</h3>
+          <div class="emergency-grid">
+            <a href="tel:100" class="emergency-btn">
+              <span class="icon">🚓</span>
+              <span class="label">Police: 100</span>
+            </a>
+            <a href="tel:108" class="emergency-btn">
+              <span class="icon">🚑</span>
+              <span class="label">Ambulance: 108</span>
+            </a>
+            <a href="tel:101" class="emergency-btn">
+              <span class="icon">🔥</span>
+              <span class="label">Fire: 101</span>
+            </a>
+            <a href="tel:9482831381" class="emergency-btn">
+              <span class="icon">🏨</span>
+              <span class="label">Reception</span>
+            </a>
           </div>
+        </div>
+      </div>
 
-          <button
-            type="submit"
-            style="
-              width: 100%;
-              padding: 12px;
-              background: linear-gradient(
-                135deg,
-                var(--primary) 0%,
-                var(--secondary) 100%
-              );
-              color: var(--white);
-              border: none;
-              border-radius: 6px;
-              font-weight: 600;
-              cursor: pointer;
-              font-size: 14px;
-              min-height: 44px;
-            "
-          >
-            <i class="fas fa-send"></i> Submit Feedback
-          </button>
-        </form>
+      <div class="footer">
+        <p><strong>Cibara Comforts</strong></p>
+        <p>Harihar, Karnataka</p>
+        <p style="margin-top: 12px">Have a wonderful stay! 🙏</p>
       </div>
     </div>
-
-    <!-- Success Modal -->
-    <div id="successModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-icon">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <h2>Thank You!</h2>
-        <p>Your feedback has been recorded. We appreciate your input!</p>
-        <button class="modal-btn" onclick="closeModal()">Close</button>
-      </div>
-    </div>
-
-    <!-- Copy Success Modal -->
-    <div id="copyModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-icon" style="color: var(--success)">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <h2>Password Copied!</h2>
-        <p>
-          WiFi password has been copied to your clipboard. Paste it in your WiFi
-          settings.
-        </p>
-        <button class="modal-btn" onclick="closeModal()">Got It</button>
-      </div>
-    </div>
-
-    <!-- Emergency Modal -->
-    <div id="emergencyModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-icon" style="color: var(--danger)">
-          <i class="fas fa-triangle-exclamation"></i>
-        </div>
-        <h2>Emergency Help</h2>
-        <p><strong>24/7 Assistance:</strong><br />📞 9482831381</p>
-        <p><strong>Reception Desk:</strong><br />📞 08102 297384</p>
-        <p style="font-size: 12px; margin-top: 10px">
-          For any emergency, don't hesitate to call. Our staff is always ready
-          to help!
-        </p>
-        <button class="modal-btn" onclick="closeModal()">Close</button>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-      <p><strong>Cibara Comforts</strong> - Harihar, Karnataka</p>
-      <p>Your comfort is our priority. Have a wonderful stay! 🏨</p>
-      <p>© 2024 Cibara Comforts. All rights reserved.</p>
-    </footer>
 
     <script>
-      // Make Call Function
-      function makeCall(number) {
-        window.location.href = `tel:${number}`;
-      }
-
-      // Copy Password Function
       function copyPassword() {
-        const password = "Cibara@1212";
-        navigator.clipboard
-          .writeText(password)
-          .then(function () {
-            document.getElementById("copyModal").style.display = "block";
-            setTimeout(() => {
-              document.getElementById("copyModal").style.display = "none";
-            }, 3000);
-          })
-          .catch(function (err) {
-            alert("Password: Cibara@1212");
-          });
-      }
+        const password = document.getElementById("wifiPassword").textContent;
 
-      // Scroll to Feedback
-      function scrollToFeedback() {
-        document
-          .getElementById("feedbackSection")
-          .scrollIntoView({ behavior: "smooth" });
-      }
-
-      // Show Emergency Info
-      function showEmergencyInfo() {
-        document.getElementById("emergencyModal").style.display = "block";
-      }
-
-      // Feedback Form Handler
-      function handleSubmit(event) {
-        event.preventDefault();
-
-        const formData = {
-          timestamp: new Date().toLocaleString("en-IN"),
-          name: document.getElementById("name").value,
-          contact: document.getElementById("contact").value,
-          type: document.getElementById("type").value,
-          message: document.getElementById("message").value,
-        };
-
-        let allFeedback =
-          JSON.parse(localStorage.getItem("cibaraFeedback")) || [];
-        allFeedback.push(formData);
-        localStorage.setItem("cibaraFeedback", JSON.stringify(allFeedback));
-
-        document.getElementById("feedbackForm").reset();
-        document.getElementById("successModal").style.display = "block";
-
-        setTimeout(() => {
-          document.getElementById("successModal").style.display = "none";
-        }, 3000);
-      }
-
-      // Close Modal
-      function closeModal() {
-        document.getElementById("successModal").style.display = "none";
-        document.getElementById("copyModal").style.display = "none";
-        document.getElementById("emergencyModal").style.display = "none";
-      }
-
-      // Close modal when clicking outside
-      window.onclick = function (event) {
-        const modals = ["successModal", "copyModal", "emergencyModal"];
-        modals.forEach((modalId) => {
-          const modal = document.getElementById(modalId);
-          if (event.target === modal) {
-            modal.style.display = "none";
-          }
-        });
-      };
-
-      // View feedback data
-      function viewAllFeedback() {
-        const allFeedback =
-          JSON.parse(localStorage.getItem("cibaraFeedback")) || [];
-        console.log("All Feedback Data:", allFeedback);
-        return allFeedback;
-      }
-
-      // Download feedback
-      function downloadFeedback() {
-        const allFeedback =
-          JSON.parse(localStorage.getItem("cibaraFeedback")) || [];
-        if (allFeedback.length === 0) {
-          alert("No feedback data to download");
-          return;
+        // Modern clipboard API
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(password)
+            .then(() => {
+              showFeedback();
+            })
+            .catch(() => {
+              fallbackCopy(password);
+            });
+        } else {
+          fallbackCopy(password);
         }
-        const dataStr = JSON.stringify(allFeedback, null, 2);
-        const dataBlob = new Blob([dataStr], { type: "application/json" });
-        const url = URL.createObjectURL(dataBlob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `cibara_feedback_${
-          new Date().toISOString().split("T")[0]
-        }.json`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
       }
+
+      function fallbackCopy(text) {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+          document.execCommand("copy");
+          showFeedback();
+        } catch (err) {
+          alert("Password: " + text);
+        }
+
+        document.body.removeChild(textarea);
+      }
+
+      function showFeedback() {
+        const feedback = document.getElementById("copyFeedback");
+        feedback.classList.add("show");
+        setTimeout(() => {
+          feedback.classList.remove("show");
+        }, 2000);
+      }
+
+      // Allow selecting password text on tap
+      document
+        .getElementById("wifiPassword")
+        .addEventListener("click", function () {
+          const range = document.createRange();
+          range.selectNodeContents(this);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+        });
     </script>
   </body>
 </html>
