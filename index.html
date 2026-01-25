@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -13,8 +13,8 @@
 
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: #f0f4f8;
-        color: #2d3748;
+        background: linear-gradient(135deg, #f0f9ff 0%, #fef3c7 100%);
+        color: #1e293b;
         line-height: 1.6;
       }
 
@@ -23,32 +23,76 @@
         margin: 0 auto;
         background: white;
         min-height: 100vh;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
       }
 
       .hero {
-        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        background: linear-gradient(
+          135deg,
+          #1e40af 0%,
+          #3b82f6 50%,
+          #fbbf24 100%
+        );
         color: white;
-        padding: 30px 20px 20px;
+        padding: 20px 20px 10px;
         text-align: center;
         position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        animation: pulse 4s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.8;
+        }
       }
 
       .hero h1 {
         font-size: 1.6em;
         margin-bottom: 5px;
         font-weight: 600;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       }
 
       .hero p {
         font-size: 0.9em;
-        opacity: 0.9;
+        opacity: 0.95;
+        position: relative;
+        z-index: 1;
       }
 
       .room-image {
         width: 100%;
-        height: 180px;
+        height: 200px;
         object-fit: cover;
         display: block;
+        margin-top: -10px;
+        position: relative;
+        z-index: 2;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
       }
 
       .content {
@@ -61,7 +105,10 @@
 
       .section-title {
         font-size: 1.1em;
-        color: #1e40af;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         margin-bottom: 12px;
         font-weight: 600;
         display: flex;
@@ -83,12 +130,30 @@
         justify-content: center;
         padding: 16px 10px;
         background: white;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
+        border: 2px solid #e0f2fe;
+        border-radius: 16px;
         text-decoration: none;
-        color: #2d3748;
-        transition: all 0.2s ease;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        color: #1e293b;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .action-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .action-btn:active::before {
+        opacity: 1;
       }
 
       .action-btn:active {
@@ -96,13 +161,13 @@
       }
 
       .action-btn.primary {
-        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
         color: white;
         border: none;
       }
 
       .action-btn.secondary {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
         color: white;
         border: none;
       }
@@ -110,40 +175,73 @@
       .action-btn .icon {
         font-size: 1.8em;
         margin-bottom: 6px;
+        position: relative;
+        z-index: 1;
       }
 
       .action-btn .label {
         font-size: 0.75em;
         opacity: 0.85;
         margin-bottom: 3px;
+        position: relative;
+        z-index: 1;
       }
 
       .action-btn .number {
         font-size: 0.95em;
         font-weight: 600;
+        position: relative;
+        z-index: 1;
       }
 
       .wifi-section {
-        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        background: linear-gradient(
+          135deg,
+          #1e40af 0%,
+          #3b82f6 50%,
+          #fbbf24 100%
+        );
         color: white;
-        padding: 20px;
-        border-radius: 12px;
+        padding: 24px;
+        border-radius: 16px;
         margin-bottom: 20px;
         text-align: center;
+        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .wifi-section::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.15) 0%,
+          transparent 70%
+        );
       }
 
       .wifi-section h3 {
         font-size: 1.1em;
         margin-bottom: 15px;
         font-weight: 600;
+        position: relative;
+        z-index: 1;
       }
 
       .wifi-password-box {
         background: white;
-        color: #2d3748;
+        color: #1e293b;
         padding: 16px;
-        border-radius: 10px;
+        border-radius: 12px;
         margin-top: 12px;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
 
       .wifi-password {
@@ -153,11 +251,14 @@
         letter-spacing: 2px;
         margin: 8px 0;
         user-select: all;
-        color: #2563eb;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       .copy-btn {
-        background: #2563eb;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
         color: white;
         border: none;
         padding: 10px 24px;
@@ -166,12 +267,13 @@
         font-weight: 600;
         cursor: pointer;
         margin-top: 12px;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
       }
 
       .copy-btn:active {
         transform: scale(0.97);
-        background: #1e40af;
+        box-shadow: 0 1px 4px rgba(59, 130, 246, 0.3);
       }
 
       .copy-feedback {
@@ -179,15 +281,15 @@
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background: #10b981;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
         padding: 12px 24px;
-        border-radius: 8px;
+        border-radius: 12px;
         font-weight: 600;
         opacity: 0;
         transition: opacity 0.3s ease;
         z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
         font-size: 0.9em;
       }
 
@@ -204,14 +306,16 @@
       .amenity {
         text-align: center;
         padding: 12px 8px;
-        background: #f8fafc;
-        border-radius: 10px;
-        border: 1px solid #e2e8f0;
-        transition: all 0.2s ease;
+        background: linear-gradient(135deg, #f0f9ff 0%, #fef9e7 100%);
+        border-radius: 12px;
+        border: 2px solid #e0f2fe;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(59, 130, 246, 0.08);
       }
 
       .amenity:active {
-        background: #e2e8f0;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
       }
 
       .amenity .icon {
@@ -221,8 +325,9 @@
 
       .amenity .name {
         font-size: 0.75em;
-        color: #64748b;
+        color: #475569;
         line-height: 1.3;
+        font-weight: 500;
       }
 
       .rules-list {
@@ -230,15 +335,17 @@
       }
 
       .rule {
-        background: #f8fafc;
+        background: linear-gradient(135deg, #f0f9ff 0%, #fef9e7 100%);
         padding: 12px;
         margin-bottom: 8px;
-        border-radius: 8px;
+        border-radius: 10px;
         display: flex;
         gap: 12px;
         align-items: flex-start;
         font-size: 0.9em;
-        border-left: 3px solid #2563eb;
+        border-left: 4px solid transparent;
+        border-image: linear-gradient(135deg, #1e40af 0%, #fbbf24 100%) 1;
+        box-shadow: 0 2px 6px rgba(59, 130, 246, 0.08);
       }
 
       .rule .icon {
@@ -249,6 +356,7 @@
       .rule .text {
         flex: 1;
         line-height: 1.5;
+        color: #475569;
       }
 
       .feature-cards {
@@ -258,14 +366,37 @@
       }
 
       .feature-card {
-        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
         color: white;
         padding: 16px;
-        border-radius: 12px;
+        border-radius: 14px;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
         text-decoration: none;
         display: block;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 100%
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .feature-card:active::before {
+        opacity: 1;
       }
 
       .feature-card:active {
@@ -279,24 +410,58 @@
         align-items: center;
         gap: 8px;
         font-weight: 600;
+        position: relative;
+        z-index: 1;
       }
 
       .feature-card p {
         opacity: 0.95;
         line-height: 1.4;
         font-size: 0.85em;
+        position: relative;
+        z-index: 1;
       }
 
       .feature-card.whatsapp {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
       }
 
       .feature-card.checkout {
-        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
       }
 
       .feature-card.menu {
+        background: linear-gradient(135deg, #3b82f6 0%, #fbbf24 100%);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+      }
+
+      .feature-card.reviews {
         background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+      }
+
+      .review-highlight {
+        background: white;
+        color: #1e293b;
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .stars {
+        font-size: 1.5em;
+        color: #fbbf24;
+        margin-bottom: 8px;
+      }
+
+      .review-text {
+        font-size: 0.9em;
+        color: #475569;
+        line-height: 1.5;
       }
 
       .emergency-grid {
@@ -306,20 +471,21 @@
       }
 
       .emergency-btn {
-        background: #dc2626;
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
         color: white;
         padding: 14px;
-        border-radius: 10px;
+        border-radius: 12px;
         text-decoration: none;
         text-align: center;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
         border: none;
         font-size: 0.9em;
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
       }
 
       .emergency-btn:active {
         transform: scale(0.97);
-        background: #b91c1c;
+        box-shadow: 0 2px 6px rgba(220, 38, 38, 0.2);
       }
 
       .emergency-btn .icon {
@@ -334,16 +500,30 @@
       }
 
       .footer {
-        background: #1e293b;
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
         color: white;
         padding: 24px 20px;
         text-align: center;
         font-size: 0.85em;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .footer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #1e40af 0%, #fbbf24 100%);
       }
 
       .footer p {
         margin-bottom: 6px;
         opacity: 0.9;
+        position: relative;
+        z-index: 1;
       }
 
       @media (max-width: 600px) {
@@ -362,11 +542,7 @@
         <p>Welcome to Harihar</p>
       </div>
 
-      <img
-        src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=400&fit=crop"
-        alt="Hotel Room"
-        class="room-image"
-      />
+      <img src="images/Room.jpeg" alt="Hotel Room" class="room-image" />
 
       <div class="content">
         <!-- Quick Contact -->
@@ -431,6 +607,26 @@
               <p>Ask us about restaurants, temples & shopping spots</p>
             </a>
           </div>
+        </div>
+
+        <!-- Guest Reviews -->
+        <div class="section">
+          <h3 class="section-title">⭐ Guest Reviews</h3>
+          <div class="review-highlight">
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <div class="review-text">
+              <strong>Rated 4.5+ on Google</strong><br />
+              Our guests love their stay at Cibara Comforts!
+            </div>
+          </div>
+          <a
+            href="https://www.google.com/travel/search?q=cibara%20comforts%20reviews&g2lb=4965990%2C72471280%2C72560029%2C72573224%2C72647020%2C72686036%2C72803964%2C72882230%2C72958624%2C73059275%2C73064764%2C73107089%2C73192290%2C73249150&hl=en-IN&gl=in&cs=1&ssta=1&ts=CAEaSQopEicyJTB4M2JiYTI5NTc4YmI1OGNiZDoweGRiNTFjMTNhOWNlZTllZmISHBIUCgcI6g8QAhgZEgcI6g8QAhgaGAEyBAgAEAAqBwoFOgNJTlI&qs=CAEyFENnc0ktNzI2NTZtbjhLamJBUkFCOAJCCQn7nu6cOsFR20IJCfue7pw6wVHb&ap=MAC6AQdyZXZpZXdz&ictx=111&ved=0CAAQ5JsGahcKEwiosp-wzqaSAxUAAAAAHQAAAAAQJQ"
+            target="_blank"
+            class="feature-card reviews"
+          >
+            <h4>📝 Read Guest Reviews</h4>
+            <p>See what our guests are saying about their experience</p>
+          </a>
         </div>
 
         <!-- Room Amenities -->
