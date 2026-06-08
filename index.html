@@ -2,786 +2,1460 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cibara Comforts - Guest Info</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f7f8fb" media="(prefers-color-scheme: light)" />
+    <meta name="description" content="Cibara Comforts — guest information, WiFi, services and local guide." />
+    <title>Cibara Comforts · Guest Guide</title>
+
+    <!--
+      ============================================================
+      EDIT EVERYTHING HERE — no need to touch the HTML/CSS below.
+      The whole page reads from this CONFIG object.
+      ============================================================
+    -->
+    <script>
+      const CONFIG = {
+        hotelName: "Cibara Comforts",
+        location: "Harihar, Karnataka",
+        roomImage: "images/Room.jpeg",
+
+        // Contact
+        phoneMobile: "9482831381",
+        phoneLandline: "08192297384",
+        whatsapp: "919482831381", // country code + number, digits only
+
+        // WiFi — used for the "copy" button AND the auto-connect QR code.
+        // SSID must match your network name EXACTLY for the QR to work.
+        wifi: {
+          ssid: "Cibara Comforts",
+          password: "Cibara@1212",
+          encryption: "WPA", // "WPA" | "WEP" | "nopass"
+          hidden: false,
+        },
+
+        // Maps — used for the embedded map + "Get Directions" button.
+        // Put your exact business name or a "lat,lng" pair here.
+        mapsQuery: "Cibara Comforts Harihar",
+
+        // Reviews
+        reviewsUrl:
+          "https://www.google.com/travel/search?q=cibara%20comforts%20reviews",
+        rating: "4.5",
+
+        // Checkout time shown in the services card
+        checkoutTime: "11:00 AM",
+
+        // Nearby places (label is auto-translated only for the heading).
+        nearby: [
+          { icon: "🛕", name: "Harihareshwara Temple", query: "Harihareshwara Temple Harihar" },
+          { icon: "🍽️", name: "Restaurants", query: "restaurants near Harihar" },
+          { icon: "🏧", name: "ATM", query: "ATM near Harihar" },
+          { icon: "🚉", name: "Harihar Railway Station", query: "Harihar Railway Station" },
+        ],
+
+        // Quick requests — each opens WhatsApp with a pre-filled message.
+        // "key" maps to a translated label in the I18N.*.req object below.
+        requests: [
+          { icon: "🧺", key: "towels" },
+          { icon: "💧", key: "water" },
+          { icon: "🧹", key: "cleaning" },
+          { icon: "🛏️", key: "linen" },
+          { icon: "🧴", key: "toiletries" },
+          { icon: "🕚", key: "latecheckout" },
+        ],
+      };
+    </script>
+
     <style>
+      /* ---------- Design tokens ---------- */
+      :root {
+        --brand: #2f4bdb;
+        --brand-2: #5b73ff;
+        --accent: #e9a23b;
+        --danger: #e0524a;
+        --ok: #1ea672;
+
+        --bg: #f4f6fb;
+        --bg-2: #eaeefb;
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --text: #161a23;
+        --muted: #5b6472;
+        --border: rgba(20, 26, 40, 0.08);
+        --shadow: 0 1px 2px rgba(16, 24, 40, 0.04),
+          0 8px 24px rgba(16, 24, 40, 0.06);
+        --shadow-lg: 0 12px 40px rgba(16, 24, 40, 0.12);
+        --radius: 18px;
+        --radius-sm: 12px;
+      }
+
+      html[data-theme="dark"] {
+        --brand: #6b83ff;
+        --brand-2: #8ea2ff;
+        --accent: #f0b659;
+        --danger: #ff6b61;
+        --ok: #34d399;
+
+        --bg: #0b1220;
+        --bg-2: #0e1626;
+        --surface: #141d2e;
+        --surface-2: #18233a;
+        --text: #e8edf7;
+        --muted: #9aa6bd;
+        --border: rgba(255, 255, 255, 0.08);
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.35);
+        --shadow-lg: 0 18px 50px rgba(0, 0, 0, 0.5);
+      }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      html {
+        scroll-behavior: smooth;
       }
 
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #f0f9ff 0%, #fef3c7 100%);
-        color: #1e293b;
-        line-height: 1.6;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Noto Sans Kannada",
+          "Noto Sans Devanagari", sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        background-image: radial-gradient(
+            1200px 600px at 50% -10%,
+            var(--bg-2),
+            transparent 60%
+          );
+        line-height: 1.55;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        padding-bottom: env(safe-area-inset-bottom);
       }
 
-      .container {
-        max-width: 480px;
+      .app {
+        max-width: 520px;
         margin: 0 auto;
-        background: white;
         min-height: 100vh;
-        box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
-      }
-
-      .hero {
-        background: linear-gradient(
-          135deg,
-          #1e40af 0%,
-          #3b82f6 50%,
-          #fbbf24 100%
-        );
-        color: white;
-        padding: 20px 20px 10px;
-        text-align: center;
         position: relative;
-        overflow: hidden;
       }
 
-      .hero::before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(
-          circle,
-          rgba(255, 255, 255, 0.1) 0%,
-          transparent 70%
-        );
-        animation: pulse 4s ease-in-out infinite;
+      /* ---------- Header ---------- */
+      header.bar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px 16px;
+        padding-top: calc(12px + env(safe-area-inset-top));
+        background: color-mix(in srgb, var(--surface) 80%, transparent);
+        backdrop-filter: saturate(180%) blur(14px);
+        -webkit-backdrop-filter: saturate(180%) blur(14px);
+        border-bottom: 1px solid var(--border);
       }
 
-      @keyframes pulse {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 0.5;
-        }
-        50% {
-          transform: scale(1.1);
-          opacity: 0.8;
-        }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
       }
-
-      .hero h1 {
-        font-size: 1.6em;
-        margin-bottom: 5px;
-        font-weight: 600;
-        position: relative;
-        z-index: 1;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      }
-
-      .hero p {
-        font-size: 0.9em;
-        opacity: 0.95;
-        position: relative;
-        z-index: 1;
-      }
-
-      .room-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        display: block;
-        margin-top: -10px;
-        position: relative;
-        z-index: 2;
-        border-radius: 20px 20px 0 0;
-        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
-      }
-
-      .content {
-        padding: 20px 16px;
-      }
-
-      .section {
-        margin-bottom: 25px;
-      }
-
-      .section-title {
+      .brand .logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 11px;
+        display: grid;
+        place-items: center;
         font-size: 1.1em;
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 12px;
-        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, var(--brand), var(--accent));
+        box-shadow: var(--shadow);
+        flex-shrink: 0;
+      }
+      .brand .name {
+        font-weight: 700;
+        font-size: 0.98rem;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .brand .name small {
+        display: block;
+        font-weight: 500;
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+
+      .bar-actions {
         display: flex;
         align-items: center;
         gap: 8px;
-      }
-
-      .quick-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-
-      .action-btn {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 16px 10px;
-        background: white;
-        border: 2px solid #e0f2fe;
-        border-radius: 16px;
-        text-decoration: none;
-        color: #1e293b;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .action-btn::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .action-btn:active::before {
-        opacity: 1;
-      }
-
-      .action-btn:active {
-        transform: scale(0.97);
-      }
-
-      .action-btn.primary {
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        color: white;
-        border: none;
-      }
-
-      .action-btn.secondary {
-        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-        color: white;
-        border: none;
-      }
-
-      .action-btn .icon {
-        font-size: 1.8em;
-        margin-bottom: 6px;
-        position: relative;
-        z-index: 1;
-      }
-
-      .action-btn .label {
-        font-size: 0.75em;
-        opacity: 0.85;
-        margin-bottom: 3px;
-        position: relative;
-        z-index: 1;
-      }
-
-      .action-btn .number {
-        font-size: 0.95em;
-        font-weight: 600;
-        position: relative;
-        z-index: 1;
-      }
-
-      .wifi-section {
-        background: linear-gradient(
-          135deg,
-          #1e40af 0%,
-          #3b82f6 50%,
-          #fbbf24 100%
-        );
-        color: white;
-        padding: 24px;
-        border-radius: 16px;
-        margin-bottom: 20px;
-        text-align: center;
-        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .wifi-section::before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(
-          circle,
-          rgba(255, 255, 255, 0.15) 0%,
-          transparent 70%
-        );
-      }
-
-      .wifi-section h3 {
-        font-size: 1.1em;
-        margin-bottom: 15px;
-        font-weight: 600;
-        position: relative;
-        z-index: 1;
-      }
-
-      .wifi-password-box {
-        background: white;
-        color: #1e293b;
-        padding: 16px;
-        border-radius: 12px;
-        margin-top: 12px;
-        position: relative;
-        z-index: 1;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-
-      .wifi-password {
-        font-family: "Courier New", monospace;
-        font-size: 1.4em;
-        font-weight: 700;
-        letter-spacing: 2px;
-        margin: 8px 0;
-        user-select: all;
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-
-      .copy-btn {
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        color: white;
-        border: none;
-        padding: 10px 24px;
-        border-radius: 8px;
-        font-size: 0.9em;
-        font-weight: 600;
-        cursor: pointer;
-        margin-top: 12px;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-      }
-
-      .copy-btn:active {
-        transform: scale(0.97);
-        box-shadow: 0 1px 4px rgba(59, 130, 246, 0.3);
-      }
-
-      .copy-feedback {
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
-        padding: 12px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: 1000;
-        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
-        font-size: 0.9em;
-      }
-
-      .copy-feedback.show {
-        opacity: 1;
-      }
-
-      .amenities-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-      }
-
-      .amenity {
-        text-align: center;
-        padding: 12px 8px;
-        background: linear-gradient(135deg, #f0f9ff 0%, #fef9e7 100%);
-        border-radius: 12px;
-        border: 2px solid #e0f2fe;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 6px rgba(59, 130, 246, 0.08);
-      }
-
-      .amenity:active {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-      }
-
-      .amenity .icon {
-        font-size: 1.5em;
-        margin-bottom: 6px;
-      }
-
-      .amenity .name {
-        font-size: 0.75em;
-        color: #475569;
-        line-height: 1.3;
-        font-weight: 500;
-      }
-
-      .rules-list {
-        list-style: none;
-      }
-
-      .rule {
-        background: linear-gradient(135deg, #f0f9ff 0%, #fef9e7 100%);
-        padding: 12px;
-        margin-bottom: 8px;
-        border-radius: 10px;
-        display: flex;
-        gap: 12px;
-        align-items: flex-start;
-        font-size: 0.9em;
-        border-left: 4px solid transparent;
-        border-image: linear-gradient(135deg, #1e40af 0%, #fbbf24 100%) 1;
-        box-shadow: 0 2px 6px rgba(59, 130, 246, 0.08);
-      }
-
-      .rule .icon {
-        font-size: 1.2em;
         flex-shrink: 0;
       }
 
-      .rule .text {
-        flex: 1;
-        line-height: 1.5;
-        color: #475569;
-      }
-
-      .feature-cards {
-        display: grid;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-
-      .feature-card {
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        color: white;
-        padding: 16px;
-        border-radius: 14px;
+      .icon-btn,
+      .lang-select {
+        height: 38px;
+        border-radius: 11px;
+        border: 1px solid var(--border);
+        background: var(--surface-2);
+        color: var(--text);
+        font-size: 0.85rem;
+        font-weight: 600;
         cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: block;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        transition: transform 0.15s ease, background 0.2s ease;
+      }
+      .icon-btn {
+        width: 38px;
+        display: grid;
+        place-items: center;
+        font-size: 1.05rem;
+      }
+      .icon-btn:active,
+      .lang-select:active {
+        transform: scale(0.94);
+      }
+      .lang-select {
+        padding: 0 10px;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: none;
+      }
+
+      /* ---------- Hero ---------- */
+      .hero {
         position: relative;
+        margin: 14px 14px 0;
+        border-radius: 24px;
         overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        isolation: isolate;
       }
-
-      .feature-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
+      .hero img {
         width: 100%;
-        height: 100%;
+        height: 230px;
+        object-fit: cover;
+        display: block;
+      }
+      .hero .scrim {
+        position: absolute;
+        inset: 0;
         background: linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.1) 0%,
-          transparent 100%
+          to top,
+          rgba(8, 12, 24, 0.82) 0%,
+          rgba(8, 12, 24, 0.25) 45%,
+          rgba(8, 12, 24, 0.05) 100%
         );
-        opacity: 0;
-        transition: opacity 0.3s ease;
+      }
+      .hero .caption {
+        position: absolute;
+        left: 18px;
+        right: 18px;
+        bottom: 16px;
+        color: #fff;
+      }
+      .hero .welcome {
+        font-size: 0.78rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        opacity: 0.85;
+        font-weight: 600;
+      }
+      .hero h1 {
+        font-size: 1.7rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin: 2px 0 4px;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+      }
+      .hero .loc {
+        font-size: 0.86rem;
+        opacity: 0.92;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #fff;
+        padding: 6px 11px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
       }
 
-      .feature-card:active::before {
-        opacity: 1;
+      /* ---------- Quick actions ---------- */
+      .quick {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        padding: 16px 14px 4px;
+      }
+      .quick a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 7px;
+        padding: 14px 6px;
+        border-radius: var(--radius-sm);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        text-decoration: none;
+        color: var(--text);
+        box-shadow: var(--shadow);
+        transition: transform 0.15s ease;
+      }
+      .quick a:active {
+        transform: translateY(2px) scale(0.97);
+      }
+      .quick .ic {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-size: 1.25rem;
+        color: #fff;
+      }
+      .quick .ic.call {
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      }
+      .quick .ic.wa {
+        background: linear-gradient(135deg, #1faf63, #25d366);
+      }
+      .quick .ic.dir {
+        background: linear-gradient(135deg, #e0524a, #f0894a);
+      }
+      .quick .ic.wifi {
+        background: linear-gradient(135deg, var(--accent), #f6c66a);
+      }
+      .quick .lbl {
+        font-size: 0.74rem;
+        font-weight: 600;
+        color: var(--muted);
       }
 
-      .feature-card:active {
-        transform: scale(0.98);
+      /* ---------- Sections / cards ---------- */
+      .content {
+        padding: 12px 14px 28px;
       }
-
-      .feature-card h4 {
-        font-size: 1em;
-        margin-bottom: 6px;
+      section {
+        margin-top: 22px;
+      }
+      .sec-title {
         display: flex;
         align-items: center;
         gap: 8px;
-        font-weight: 600;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        margin: 0 4px 11px;
+      }
+      .sec-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      /* WiFi */
+      .wifi {
+        padding: 18px;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: #fff;
         position: relative;
-        z-index: 1;
       }
-
-      .feature-card p {
-        opacity: 0.95;
-        line-height: 1.4;
-        font-size: 0.85em;
-        position: relative;
-        z-index: 1;
+      .wifi h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
       }
-
-      .feature-card.whatsapp {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+      .wifi-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 14px;
+        padding: 12px 14px;
       }
-
-      .feature-card.checkout {
-        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+      .wifi-row + .wifi-row {
+        margin-top: 10px;
       }
-
-      .feature-card.menu {
-        background: linear-gradient(135deg, #3b82f6 0%, #fbbf24 100%);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+      .wifi-row .k {
+        font-size: 0.72rem;
+        opacity: 0.85;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
       }
-
-      .feature-card.reviews {
-        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+      .wifi-row .v {
+        font-size: 1.05rem;
+        font-weight: 700;
+        font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+        letter-spacing: 0.5px;
+        word-break: break-all;
       }
-
-      .review-highlight {
-        background: white;
-        color: #1e293b;
+      .wifi-row .grow {
+        flex: 1;
+        min-width: 0;
+      }
+      .mini-btn {
+        flex-shrink: 0;
+        border: none;
+        background: #fff;
+        color: var(--brand);
+        font-weight: 700;
+        font-size: 0.82rem;
+        padding: 9px 13px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.15s ease;
+      }
+      .mini-btn:active {
+        transform: scale(0.95);
+      }
+      .qr-wrap {
+        margin-top: 14px;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        border-radius: 14px;
         padding: 16px;
-        border-radius: 12px;
-        margin-bottom: 15px;
+      }
+      .qr-wrap.show {
+        display: flex;
+      }
+      .qr-wrap #qrcode {
+        width: 184px;
+        height: 184px;
+        display: grid;
+        place-items: center;
+      }
+      .qr-wrap #qrcode img,
+      .qr-wrap #qrcode canvas {
+        border-radius: 8px;
+      }
+      .qr-wrap .hint {
+        font-size: 0.78rem;
+        color: var(--muted);
         text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        max-width: 230px;
       }
 
-      .stars {
-        font-size: 1.5em;
-        color: #fbbf24;
-        margin-bottom: 8px;
+      /* Services */
+      .services {
+        display: grid;
+        gap: 10px;
+      }
+      .service {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 15px;
+        text-decoration: none;
+        color: var(--text);
+      }
+      .service + .service {
+        border-top: 1px solid var(--border);
+      }
+      .service .ic {
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+        display: grid;
+        place-items: center;
+        font-size: 1.35rem;
+        background: var(--surface-2);
+        flex-shrink: 0;
+      }
+      .service .body {
+        flex: 1;
+        min-width: 0;
+      }
+      .service .body b {
+        font-size: 0.95rem;
+        font-weight: 700;
+      }
+      .service .body span {
+        display: block;
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .service .chev {
+        color: var(--muted);
+        font-size: 1.1rem;
       }
 
-      .review-text {
-        font-size: 0.9em;
-        color: #475569;
-        line-height: 1.5;
+      /* Amenities */
+      .amenities {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      .amenity {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 13px 6px;
+        text-align: center;
+        box-shadow: var(--shadow);
+      }
+      .amenity .ic {
+        font-size: 1.4rem;
+      }
+      .amenity .nm {
+        margin-top: 5px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--muted);
+        line-height: 1.25;
       }
 
-      .emergency-grid {
+      /* Map */
+      .map-card .frame {
+        width: 100%;
+        height: 200px;
+        border: 0;
+        display: block;
+        background: var(--surface-2);
+      }
+      .map-card .below {
+        padding: 13px 15px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .map-card .addr {
+        flex: 1;
+        min-width: 0;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .btn-solid {
+        flex-shrink: 0;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.85rem;
+        padding: 11px 16px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .btn-solid:active {
+        transform: scale(0.97);
+      }
+      .nearby {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .nearby a {
+        text-decoration: none;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        padding: 12px 5px;
+        text-align: center;
+        box-shadow: var(--shadow);
+      }
+      .nearby a .ic {
+        font-size: 1.25rem;
+      }
+      .nearby a .nm {
+        margin-top: 4px;
+        display: block;
+        font-size: 0.66rem;
+        font-weight: 600;
+        color: var(--muted);
+        line-height: 1.2;
+      }
+
+      /* Reviews */
+      .review {
+        padding: 18px;
+        text-align: center;
+      }
+      .review .stars {
+        font-size: 1.3rem;
+        letter-spacing: 2px;
+      }
+      .review .big {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin: 6px 0 3px;
+      }
+      .review .sub {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 14px;
+      }
+      .btn-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        text-decoration: none;
+        color: var(--brand);
+        border: 1.5px solid var(--brand);
+        font-weight: 700;
+        font-size: 0.88rem;
+        padding: 10px 18px;
+        border-radius: 12px;
+      }
+      .btn-outline:active {
+        transform: scale(0.97);
+      }
+
+      /* Rules */
+      .rules {
+        list-style: none;
+        display: grid;
+        gap: 1px;
+        background: var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+      .rules li {
+        background: var(--surface);
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 13px 15px;
+        font-size: 0.9rem;
+      }
+      .rules li .ic {
+        font-size: 1.15rem;
+        width: 26px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      /* Emergency */
+      .emergency {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
       }
-
-      .emergency-btn {
-        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-        color: white;
-        padding: 14px;
-        border-radius: 12px;
+      .emg {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 13px 14px;
+        border-radius: 14px;
         text-decoration: none;
-        text-align: center;
-        transition: all 0.3s ease;
-        border: none;
-        font-size: 0.9em;
-        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+        background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+        border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent);
+        color: var(--text);
       }
-
-      .emergency-btn:active {
-        transform: scale(0.97);
-        box-shadow: 0 2px 6px rgba(220, 38, 38, 0.2);
+      .emg:active {
+        transform: scale(0.98);
       }
-
-      .emergency-btn .icon {
-        font-size: 1.6em;
-        margin-bottom: 6px;
+      .emg .ic {
+        font-size: 1.4rem;
+      }
+      .emg .t b {
         display: block;
+        font-size: 0.88rem;
+      }
+      .emg .t span {
+        font-size: 0.78rem;
+        color: var(--muted);
       }
 
-      .emergency-btn .label {
-        font-weight: 600;
-        font-size: 0.85em;
-      }
-
-      .footer {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        color: white;
-        padding: 24px 20px;
+      /* Footer */
+      footer {
+        margin-top: 26px;
+        padding: 24px 18px calc(28px + env(safe-area-inset-bottom));
         text-align: center;
-        font-size: 0.85em;
-        position: relative;
-        overflow: hidden;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+      footer .fname {
+        color: var(--text);
+        font-weight: 700;
+        font-size: 0.95rem;
       }
 
-      .footer::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: linear-gradient(90deg, #1e40af 0%, #fbbf24 100%);
+      /* Quick requests */
+      .req-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .req {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 7px;
+        padding: 14px 6px;
+        border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        text-decoration: none;
+        color: var(--text);
+        text-align: center;
+        cursor: pointer;
+      }
+      .req:active {
+        transform: scale(0.96);
+      }
+      .req .ic {
+        font-size: 1.5rem;
+      }
+      .req .nm {
+        font-size: 0.74rem;
+        font-weight: 600;
+        color: var(--muted);
+        line-height: 1.25;
       }
 
-      .footer p {
-        margin-bottom: 6px;
-        opacity: 0.9;
-        position: relative;
-        z-index: 1;
+      /* Toast */
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: calc(22px + env(safe-area-inset-bottom));
+        transform: translateX(-50%) translateY(20px);
+        background: var(--ok);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.88rem;
+        padding: 11px 18px;
+        border-radius: 12px;
+        box-shadow: var(--shadow-lg);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        z-index: 100;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
       }
 
-      @media (max-width: 600px) {
-        .container {
-          max-width: 100%;
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          scroll-behavior: auto !important;
         }
       }
     </style>
   </head>
+
   <body>
-    <div class="copy-feedback" id="copyFeedback">✓ Password copied!</div>
-
-    <div class="container">
-      <div class="hero">
-        <h1>🏨 Cibara Comforts</h1>
-        <p>Welcome to Harihar</p>
-      </div>
-
-      <img src="images/Room.jpeg" alt="Hotel Room" class="room-image" />
-
-      <div class="content">
-        <!-- Quick Contact -->
-        <div class="section">
-          <h3 class="section-title">📞 Contact Reception</h3>
-          <div class="quick-actions">
-            <a href="tel:9482831381" class="action-btn primary">
-              <div class="icon">📱</div>
-              <div class="label">Mobile</div>
-              <div class="number">9482831381</div>
-            </a>
-            <a href="tel:08192297384" class="action-btn secondary">
-              <div class="icon">☎️</div>
-              <div class="label">Landline</div>
-              <div class="number">08192 297384</div>
-            </a>
+    <div class="app">
+      <header class="bar">
+        <div class="brand">
+          <div class="logo">🏨</div>
+          <div class="name">
+            <span id="brandName">Cibara Comforts</span>
+            <small id="brandLoc">Harihar, Karnataka</small>
           </div>
         </div>
-
-        <!-- WiFi Section -->
-        <div class="wifi-section">
-          <h3>🔐 WiFi Password</h3>
-          <div class="wifi-password-box">
-            <div
-              style="
-                color: #64748b;
-                font-weight: 500;
-                margin-bottom: 4px;
-                font-size: 0.85em;
-              "
-            >
-              Tap to select, then copy
-            </div>
-            <div class="wifi-password" id="wifiPassword">Cibara@1212</div>
-            <button class="copy-btn" onclick="copyPassword()">
-              📋 Copy Password
-            </button>
-          </div>
-        </div>
-
-        <!-- Quick Services -->
-        <div class="section">
-          <h3 class="section-title">⚡ Quick Services</h3>
-          <div class="feature-cards">
-            <a href="tel:9482831381" class="feature-card">
-              <h4>🍽️ Room Service</h4>
-              <p>Order food, snacks, or beverages delivered to your room</p>
-            </a>
-            <a
-              href="https://wa.me/919482831381?text=Hi%20Cibara%20Comforts%2C%20"
-              class="feature-card whatsapp"
-            >
-              <h4>💬 WhatsApp Chat</h4>
-              <p>Message us for quick requests or questions</p>
-            </a>
-            <a href="tel:9482831381" class="feature-card checkout">
-              <h4>🧳 Checkout Request</h4>
-              <p>Call to request checkout or extend your stay</p>
-            </a>
-            <a href="tel:9482831381" class="feature-card menu">
-              <h4>🗺️ Local Guide</h4>
-              <p>Ask us about restaurants, temples & shopping spots</p>
-            </a>
-          </div>
-        </div>
-
-        <!-- Guest Reviews -->
-        <div class="section">
-          <h3 class="section-title">⭐ Guest Reviews</h3>
-          <div class="review-highlight">
-            <div class="stars">⭐⭐⭐⭐⭐</div>
-            <div class="review-text">
-              <strong>Rated 4.5+ on Google</strong><br />
-              Our guests love their stay at Cibara Comforts!
-            </div>
-          </div>
-          <a
-            href="https://www.google.com/travel/search?q=cibara%20comforts%20reviews&g2lb=4965990%2C72471280%2C72560029%2C72573224%2C72647020%2C72686036%2C72803964%2C72882230%2C72958624%2C73059275%2C73064764%2C73107089%2C73192290%2C73249150&hl=en-IN&gl=in&cs=1&ssta=1&ts=CAEaSQopEicyJTB4M2JiYTI5NTc4YmI1OGNiZDoweGRiNTFjMTNhOWNlZTllZmISHBIUCgcI6g8QAhgZEgcI6g8QAhgaGAEyBAgAEAAqBwoFOgNJTlI&qs=CAEyFENnc0ktNzI2NTZtbjhLamJBUkFCOAJCCQn7nu6cOsFR20IJCfue7pw6wVHb&ap=MAC6AQdyZXZpZXdz&ictx=111&ved=0CAAQ5JsGahcKEwiosp-wzqaSAxUAAAAAHQAAAAAQJQ"
-            target="_blank"
-            class="feature-card reviews"
+        <div class="bar-actions">
+          <select
+            class="lang-select"
+            id="langSelect"
+            aria-label="Language"
           >
-            <h4>📝 Read Guest Reviews</h4>
-            <p>See what our guests are saying about their experience</p>
-          </a>
+            <option value="en">EN</option>
+            <option value="kn">ಕನ್ನಡ</option>
+            <option value="hi">हिंदी</option>
+          </select>
+          <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">
+            🌙
+          </button>
         </div>
+      </header>
 
-        <!-- Room Amenities -->
-        <div class="section">
-          <h3 class="section-title">🛏️ Room Amenities</h3>
-          <div class="amenities-grid">
-            <div class="amenity">
-              <div class="icon">❄️</div>
-              <div class="name">AC</div>
-            </div>
-            <div class="amenity">
-              <div class="icon">🚿</div>
-              <div class="name">24/7 Hot Water</div>
-            </div>
-            <div class="amenity">
-              <div class="icon">📺</div>
-              <div class="name">TV</div>
-            </div>
-            <div class="amenity">
-              <div class="icon">📶</div>
-              <div class="name">Free WiFi</div>
-            </div>
-
-            <div class="amenity">
-              <div class="icon">🧴</div>
-              <div class="name">Toiletries</div>
-            </div>
-            <div class="amenity">
-              <div class="icon">☕</div>
-              <div class="name">Tea/Coffee</div>
-            </div>
-            <div class="amenity">
-              <div class="icon">🅿️</div>
-              <div class="name">Parking</div>
-            </div>
-            <div class="amenity">
-              <div class="icon">🧺</div>
-              <div class="name">Laundry (Chargable)</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- House Rules -->
-        <div class="section">
-          <h3 class="section-title">📋 House Rules</h3>
-          <ul class="rules-list">
-            <li class="rule">
-              <div class="icon">🪪</div>
-              <div class="text">Valid ID required at check-in</div>
-            </li>
-            <li class="rule">
-              <div class="icon">🚭</div>
-              <div class="text">No smoking inside rooms</div>
-            </li>
-            <li class="rule">
-              <div class="icon">🎵</div>
-              <div class="text">Quiet hours: 10 PM - 7 AM</div>
-            </li>
-            <li class="rule">
-              <div class="icon">👥</div>
-              <div class="text">Visitors allowed in lobby only</div>
-            </li>
-            <li class="rule">
-              <div class="icon">🔑</div>
-              <div class="text">Lost key replacement: ₹500</div>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Emergency Contacts -->
-        <div class="section">
-          <h3 class="section-title">🚨 Emergency</h3>
-          <div class="emergency-grid">
-            <a href="tel:100" class="emergency-btn">
-              <span class="icon">🚓</span>
-              <span class="label">Police: 100</span>
-            </a>
-            <a href="tel:108" class="emergency-btn">
-              <span class="icon">🚑</span>
-              <span class="label">Ambulance: 108</span>
-            </a>
-            <a href="tel:101" class="emergency-btn">
-              <span class="icon">🔥</span>
-              <span class="label">Fire: 101</span>
-            </a>
-            <a href="tel:9482831381" class="emergency-btn">
-              <span class="icon">🏨</span>
-              <span class="label">Reception</span>
-            </a>
-          </div>
+      <div class="hero">
+        <img id="heroImg" src="images/Room.jpeg" alt="Room at Cibara Comforts" />
+        <div class="scrim"></div>
+        <div class="badge">⭐ <span id="ratingVal">4.5</span></div>
+        <div class="caption">
+          <div class="welcome" data-i18n="welcome">Welcome</div>
+          <h1 id="heroName">Cibara Comforts</h1>
+          <div class="loc">📍 <span id="heroLoc">Harihar, Karnataka</span></div>
         </div>
       </div>
 
-      <div class="footer">
-        <p><strong>Cibara Comforts</strong></p>
-        <p>Harihar, Karnataka</p>
-        <p style="margin-top: 12px">Have a wonderful stay! 🙏</p>
-      </div>
+      <nav class="quick">
+        <a id="qCall" href="#">
+          <span class="ic call">📞</span>
+          <span class="lbl" data-i18n="call">Call</span>
+        </a>
+        <a id="qWa" href="#" target="_blank" rel="noopener">
+          <span class="ic wa">💬</span>
+          <span class="lbl" data-i18n="whatsapp">WhatsApp</span>
+        </a>
+        <a id="qDir" href="#" target="_blank" rel="noopener">
+          <span class="ic dir">🧭</span>
+          <span class="lbl" data-i18n="directions">Directions</span>
+        </a>
+        <a href="#wifi">
+          <span class="ic wifi">📶</span>
+          <span class="lbl" data-i18n="wifi">WiFi</span>
+        </a>
+      </nav>
+
+      <main class="content">
+        <!-- WiFi -->
+        <section id="wifi">
+          <div class="sec-title" data-i18n="wifi_title">📶 Internet Access</div>
+          <div class="card wifi">
+            <h3>🔐 <span data-i18n="wifi_heading">WiFi Access</span></h3>
+
+            <div class="wifi-row">
+              <div class="grow">
+                <div class="k" data-i18n="network">Network</div>
+                <div class="v" id="ssidVal">Cibara Comforts</div>
+              </div>
+            </div>
+
+            <div class="wifi-row">
+              <div class="grow">
+                <div class="k" data-i18n="password">Password</div>
+                <div class="v" id="passVal">Cibara@1212</div>
+              </div>
+              <button class="mini-btn" id="copyPass" data-i18n="copy">Copy</button>
+            </div>
+
+            <button
+              class="mini-btn"
+              id="qrToggle"
+              style="margin-top: 14px; width: 100%; padding: 12px"
+              data-i18n="show_qr"
+            >
+              📷 Show WiFi QR code
+            </button>
+
+            <div class="qr-wrap" id="qrWrap">
+              <div id="qrcode"></div>
+              <div class="hint" id="qrHint" data-i18n="qr_hint">
+                Scan with another device's camera to connect automatically.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Services -->
+        <section>
+          <div class="sec-title" data-i18n="services_title">⚡ Services</div>
+          <div class="card services">
+            <a class="service" id="svcRoom" href="#">
+              <span class="ic">🍽️</span>
+              <span class="body">
+                <b data-i18n="svc_room">Room Service</b>
+                <span data-i18n="svc_room_d">Food &amp; beverages to your room</span>
+              </span>
+              <span class="chev">›</span>
+            </a>
+            <a class="service" id="svcHouse" href="#">
+              <span class="ic">🧹</span>
+              <span class="body">
+                <b data-i18n="svc_house">Housekeeping</b>
+                <span data-i18n="svc_house_d">Cleaning, towels &amp; toiletries</span>
+              </span>
+              <span class="chev">›</span>
+            </a>
+            <a class="service" id="svcCheckout" href="#">
+              <span class="ic">🧳</span>
+              <span class="body">
+                <b data-i18n="svc_checkout">Checkout / Extend Stay</b>
+                <span><span data-i18n="svc_checkout_d">Checkout by</span> <span id="checkoutTime">11:00 AM</span></span>
+              </span>
+              <span class="chev">›</span>
+            </a>
+            <a class="service" id="svcGuide" href="#">
+              <span class="ic">🗺️</span>
+              <span class="body">
+                <b data-i18n="svc_guide">Local Guide</b>
+                <span data-i18n="svc_guide_d">Temples, food &amp; shopping tips</span>
+              </span>
+              <span class="chev">›</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- Quick requests -->
+        <section>
+          <div class="sec-title" data-i18n="requests_title">🛎️ Quick Requests</div>
+          <div class="req-grid" id="reqGrid"></div>
+        </section>
+
+        <!-- Location -->
+        <section>
+          <div class="sec-title" data-i18n="location_title">📍 Location</div>
+          <div class="card map-card">
+            <iframe
+              class="frame"
+              id="mapFrame"
+              title="Map"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <div class="below">
+              <div class="addr" id="mapAddr">Harihar, Karnataka</div>
+              <a class="btn-solid" id="dirBtn" target="_blank" rel="noopener">
+                🧭 <span data-i18n="get_directions">Directions</span>
+              </a>
+            </div>
+          </div>
+          <div class="nearby" id="nearby"></div>
+        </section>
+
+        <!-- Amenities -->
+        <section>
+          <div class="sec-title" data-i18n="amenities_title">🛏️ Room Amenities</div>
+          <div class="amenities" id="amenities"></div>
+        </section>
+
+        <!-- Reviews -->
+        <section>
+          <div class="sec-title" data-i18n="reviews_title">⭐ Reviews</div>
+          <div class="card review">
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <div class="big">
+              <span data-i18n="rated">Rated</span> <span id="ratingVal2">4.5</span><span data-i18n="on_google"> on Google</span>
+            </div>
+            <div class="sub" data-i18n="reviews_sub">
+              Our guests love their stay with us.
+            </div>
+            <a class="btn-outline" id="reviewsBtn" target="_blank" rel="noopener">
+              📝 <span data-i18n="read_reviews">Read reviews</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- House rules -->
+        <section>
+          <div class="sec-title" data-i18n="rules_title">📋 House Rules</div>
+          <ul class="rules" id="rules"></ul>
+        </section>
+
+        <!-- Emergency -->
+        <section>
+          <div class="sec-title" data-i18n="emergency_title">🚨 Emergency</div>
+          <div class="emergency" id="emergency"></div>
+        </section>
+      </main>
+
+      <footer>
+        <div class="fname" id="footName">Cibara Comforts</div>
+        <div id="footLoc">Harihar, Karnataka</div>
+        <div style="margin-top: 10px" data-i18n="thanks">
+          Have a wonderful stay 🙏
+        </div>
+      </footer>
     </div>
 
+    <div class="toast" id="toast">✓ Copied</div>
+
     <script>
-      function copyPassword() {
-        const password = document.getElementById("wifiPassword").textContent;
+      /* ================= Translations ================= */
+      const I18N = {
+        en: {
+          welcome: "Welcome to",
+          call: "Call",
+          whatsapp: "WhatsApp",
+          directions: "Directions",
+          wifi: "WiFi",
+          wifi_title: "📶 Internet Access",
+          wifi_heading: "WiFi Access",
+          network: "Network",
+          password: "Password",
+          copy: "Copy",
+          copied: "Password copied",
+          show_qr: "📷 Show WiFi QR code",
+          hide_qr: "✕ Hide QR code",
+          qr_hint: "Scan with another device's camera to connect automatically.",
+          qr_unavailable: "QR couldn't load — use the password above.",
+          services_title: "⚡ Services",
+          svc_room: "Room Service",
+          svc_room_d: "Food & beverages to your room",
+          svc_house: "Housekeeping",
+          svc_house_d: "Cleaning, towels & toiletries",
+          svc_checkout: "Checkout / Extend Stay",
+          svc_checkout_d: "Checkout by",
+          svc_guide: "Local Guide",
+          svc_guide_d: "Temples, food & shopping tips",
+          location_title: "📍 Location",
+          get_directions: "Directions",
+          nearby_title: "Nearby",
+          amenities_title: "🛏️ Room Amenities",
+          reviews_title: "⭐ Reviews",
+          rated: "Rated",
+          on_google: " on Google",
+          reviews_sub: "Our guests love their stay with us.",
+          read_reviews: "Read reviews",
+          rules_title: "📋 House Rules",
+          emergency_title: "🚨 Emergency",
+          thanks: "Have a wonderful stay 🙏",
+          reception: "Reception",
+          requests_title: "🛎️ Quick Requests",
+          req_intro: "I'd like to request",
+          req: {
+            towels: "Extra towels",
+            water: "Drinking water",
+            cleaning: "Room cleaning",
+            linen: "Fresh linen",
+            toiletries: "Toiletries",
+            latecheckout: "Late checkout",
+          },
+          amenity: {
+            ac: "AC",
+            hotwater: "24/7 Hot Water",
+            tv: "TV",
+            wifi: "Free WiFi",
+            toiletries: "Toiletries",
+            tea: "Tea / Coffee",
+            parking: "Parking",
+            laundry: "Laundry*",
+          },
+          rules: [
+            "Valid photo ID required at check-in",
+            "No smoking inside the rooms",
+            "Quiet hours: 10:00 PM – 7:00 AM",
+            "Visitors allowed in the lobby only",
+            "Lost key replacement: ₹500",
+          ],
+          emg: { police: "Police", ambulance: "Ambulance", fire: "Fire" },
+        },
+        kn: {
+          welcome: "ಸ್ವಾಗತ",
+          call: "ಕರೆ",
+          whatsapp: "ವಾಟ್ಸ್‌ಆ್ಯಪ್",
+          directions: "ದಾರಿ",
+          wifi: "ವೈಫೈ",
+          wifi_title: "📶 ಇಂಟರ್ನೆಟ್",
+          wifi_heading: "ವೈಫೈ ಸಂಪರ್ಕ",
+          network: "ನೆಟ್‌ವರ್ಕ್",
+          password: "ಪಾಸ್‌ವರ್ಡ್",
+          copy: "ನಕಲಿಸಿ",
+          copied: "ಪಾಸ್‌ವರ್ಡ್ ನಕಲಾಗಿದೆ",
+          show_qr: "📷 ವೈಫೈ QR ತೋರಿಸಿ",
+          hide_qr: "✕ QR ಮರೆಮಾಡಿ",
+          qr_hint: "ಸ್ವಯಂ ಸಂಪರ್ಕಕ್ಕಾಗಿ ಬೇರೆ ಸಾಧನದ ಕ್ಯಾಮೆರಾದಿಂದ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ.",
+          qr_unavailable: "QR ಲೋಡ್ ಆಗಲಿಲ್ಲ — ಮೇಲಿನ ಪಾಸ್‌ವರ್ಡ್ ಬಳಸಿ.",
+          services_title: "⚡ ಸೇವೆಗಳು",
+          svc_room: "ರೂಮ್ ಸೇವೆ",
+          svc_room_d: "ಆಹಾರ ಮತ್ತು ಪಾನೀಯಗಳು ನಿಮ್ಮ ಕೋಣೆಗೆ",
+          svc_house: "ಹೌಸ್‌ಕೀಪಿಂಗ್",
+          svc_house_d: "ಸ್ವಚ್ಛತೆ, ಟವೆಲ್ ಮತ್ತು ಸಾಮಗ್ರಿ",
+          svc_checkout: "ಚೆಕ್‌ಔಟ್ / ವಾಸ್ತವ್ಯ ವಿಸ್ತರಣೆ",
+          svc_checkout_d: "ಚೆಕ್‌ಔಟ್ ಸಮಯ",
+          svc_guide: "ಸ್ಥಳೀಯ ಮಾರ್ಗದರ್ಶಿ",
+          svc_guide_d: "ದೇವಾಲಯ, ಆಹಾರ ಮತ್ತು ಶಾಪಿಂಗ್",
+          location_title: "📍 ಸ್ಥಳ",
+          get_directions: "ದಾರಿ",
+          nearby_title: "ಹತ್ತಿರದ ಸ್ಥಳಗಳು",
+          amenities_title: "🛏️ ಕೋಣೆಯ ಸೌಲಭ್ಯಗಳು",
+          reviews_title: "⭐ ವಿಮರ್ಶೆಗಳು",
+          rated: "ರೇಟಿಂಗ್",
+          on_google: " Google ನಲ್ಲಿ",
+          reviews_sub: "ನಮ್ಮ ಅತಿಥಿಗಳು ತಮ್ಮ ವಾಸ್ತವ್ಯವನ್ನು ಇಷ್ಟಪಡುತ್ತಾರೆ.",
+          read_reviews: "ವಿಮರ್ಶೆ ಓದಿ",
+          rules_title: "📋 ನಿಯಮಗಳು",
+          emergency_title: "🚨 ತುರ್ತು ಸಂಪರ್ಕ",
+          thanks: "ನಿಮ್ಮ ವಾಸ್ತವ್ಯ ಸುಂದರವಾಗಿರಲಿ 🙏",
+          reception: "ಸ್ವಾಗತ ಕೊಠಡಿ",
+          requests_title: "🛎️ ತ್ವರಿತ ವಿನಂತಿಗಳು",
+          req_intro: "ನನಗೆ ಬೇಕು",
+          req: {
+            towels: "ಹೆಚ್ಚುವರಿ ಟವೆಲ್",
+            water: "ಕುಡಿಯುವ ನೀರು",
+            cleaning: "ಕೋಣೆ ಸ್ವಚ್ಛತೆ",
+            linen: "ಹೊಸ ಬೆಡ್‌ಶೀಟ್",
+            toiletries: "ಸ್ನಾನ ಸಾಮಗ್ರಿ",
+            latecheckout: "ತಡವಾದ ಚೆಕ್‌ಔಟ್",
+          },
+          amenity: {
+            ac: "ಎಸಿ",
+            hotwater: "24/7 ಬಿಸಿ ನೀರು",
+            tv: "ಟಿವಿ",
+            wifi: "ಉಚಿತ ವೈಫೈ",
+            toiletries: "ಸ್ನಾನ ಸಾಮಗ್ರಿ",
+            tea: "ಚಹಾ / ಕಾಫಿ",
+            parking: "ಪಾರ್ಕಿಂಗ್",
+            laundry: "ಲಾಂಡ್ರಿ*",
+          },
+          rules: [
+            "ಚೆಕ್-ಇನ್ ಸಮಯದಲ್ಲಿ ಮಾನ್ಯ ಫೋಟೋ ಗುರುತಿನ ಚೀಟಿ ಅಗತ್ಯ",
+            "ಕೋಣೆಗಳ ಒಳಗೆ ಧೂಮಪಾನ ನಿಷೇಧ",
+            "ಶಾಂತ ಸಮಯ: ರಾತ್ರಿ 10:00 – ಬೆಳಿಗ್ಗೆ 7:00",
+            "ಭೇಟಿದಾರರಿಗೆ ಲಾಬಿಯಲ್ಲಿ ಮಾತ್ರ ಅವಕಾಶ",
+            "ಕಳೆದುಹೋದ ಕೀಲಿ ಬದಲಿ: ₹500",
+          ],
+          emg: { police: "ಪೊಲೀಸ್", ambulance: "ಆಂಬುಲೆನ್ಸ್", fire: "ಅಗ್ನಿಶಾಮಕ" },
+        },
+        hi: {
+          welcome: "स्वागत है",
+          call: "कॉल",
+          whatsapp: "व्हाट्सऐप",
+          directions: "रास्ता",
+          wifi: "वाईफ़ाई",
+          wifi_title: "📶 इंटरनेट",
+          wifi_heading: "वाईफ़ाई कनेक्शन",
+          network: "नेटवर्क",
+          password: "पासवर्ड",
+          copy: "कॉपी",
+          copied: "पासवर्ड कॉपी हुआ",
+          show_qr: "📷 वाईफ़ाई QR दिखाएं",
+          hide_qr: "✕ QR छिपाएं",
+          qr_hint: "स्वतः कनेक्ट करने के लिए दूसरे डिवाइस के कैमरे से स्कैन करें।",
+          qr_unavailable: "QR लोड नहीं हुआ — ऊपर दिया पासवर्ड उपयोग करें।",
+          services_title: "⚡ सेवाएं",
+          svc_room: "रूम सर्विस",
+          svc_room_d: "भोजन व पेय आपके कमरे तक",
+          svc_house: "हाउसकीपिंग",
+          svc_house_d: "सफ़ाई, तौलिए व सामग्री",
+          svc_checkout: "चेकआउट / ठहराव बढ़ाएं",
+          svc_checkout_d: "चेकआउट समय",
+          svc_guide: "स्थानीय गाइड",
+          svc_guide_d: "मंदिर, भोजन व खरीदारी",
+          location_title: "📍 स्थान",
+          get_directions: "रास्ता",
+          nearby_title: "आसपास",
+          amenities_title: "🛏️ कमरे की सुविधाएं",
+          reviews_title: "⭐ समीक्षाएं",
+          rated: "रेटिंग",
+          on_google: " Google पर",
+          reviews_sub: "हमारे मेहमान अपने ठहराव को पसंद करते हैं।",
+          read_reviews: "समीक्षाएं पढ़ें",
+          rules_title: "📋 नियम",
+          emergency_title: "🚨 आपातकाल",
+          thanks: "आपका ठहराव सुखद हो 🙏",
+          reception: "रिसेप्शन",
+          requests_title: "🛎️ त्वरित अनुरोध",
+          req_intro: "मुझे चाहिए",
+          req: {
+            towels: "अतिरिक्त तौलिए",
+            water: "पीने का पानी",
+            cleaning: "कमरे की सफ़ाई",
+            linen: "साफ़ चादर",
+            toiletries: "प्रसाधन सामग्री",
+            latecheckout: "देर से चेकआउट",
+          },
+          amenity: {
+            ac: "एसी",
+            hotwater: "24/7 गर्म पानी",
+            tv: "टीवी",
+            wifi: "मुफ़्त वाईफ़ाई",
+            toiletries: "प्रसाधन सामग्री",
+            tea: "चाय / कॉफ़ी",
+            parking: "पार्किंग",
+            laundry: "लॉन्ड्री*",
+          },
+          rules: [
+            "चेक-इन पर वैध फोटो आईडी आवश्यक",
+            "कमरों के अंदर धूम्रपान मना है",
+            "शांति समय: रात 10:00 – सुबह 7:00",
+            "आगंतुक केवल लॉबी में अनुमत",
+            "खोई चाबी का बदलाव: ₹500",
+          ],
+          emg: { police: "पुलिस", ambulance: "एम्बुलेंस", fire: "अग्निशमन" },
+        },
+      };
 
-        // Modern clipboard API
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard
-            .writeText(password)
-            .then(() => {
-              showFeedback();
-            })
-            .catch(() => {
-              fallbackCopy(password);
-            });
-        } else {
-          fallbackCopy(password);
-        }
-      }
+      const AMENITY_ICONS = {
+        ac: "❄️", hotwater: "🚿", tv: "📺", wifi: "📶",
+        toiletries: "🧴", tea: "☕", parking: "🅿️", laundry: "🧺",
+      };
+      const AMENITY_ORDER = ["ac","hotwater","tv","wifi","toiletries","tea","parking","laundry"];
+      const RULE_ICONS = ["🪪","🚭","🌙","👥","🔑"];
 
-      function fallbackCopy(text) {
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        textarea.style.position = "fixed";
-        textarea.style.opacity = "0";
-        document.body.appendChild(textarea);
-        textarea.select();
+      /* ================= State ================= */
+      const store = {
+        get(k, d) { try { return localStorage.getItem(k) ?? d; } catch { return d; } },
+        set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+      };
 
-        try {
-          document.execCommand("copy");
-          showFeedback();
-        } catch (err) {
-          alert("Password: " + text);
-        }
+      let lang = store.get("cibara_lang", null) ||
+        (navigator.language || "en").slice(0, 2);
+      if (!I18N[lang]) lang = "en";
 
-        document.body.removeChild(textarea);
-      }
+      /* ================= Wiring from CONFIG ================= */
+      function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
 
-      function showFeedback() {
-        const feedback = document.getElementById("copyFeedback");
-        feedback.classList.add("show");
-        setTimeout(() => {
-          feedback.classList.remove("show");
-        }, 2000);
-      }
+      function applyConfig() {
+        setText("brandName", CONFIG.hotelName);
+        setText("brandLoc", CONFIG.location);
+        setText("heroName", CONFIG.hotelName);
+        setText("heroLoc", CONFIG.location);
+        setText("footName", CONFIG.hotelName);
+        setText("footLoc", CONFIG.location);
+        setText("ssidVal", CONFIG.wifi.ssid);
+        setText("passVal", CONFIG.wifi.password);
+        setText("ratingVal", CONFIG.rating);
+        setText("ratingVal2", CONFIG.rating);
+        setText("checkoutTime", CONFIG.checkoutTime);
+        setText("mapAddr", CONFIG.location);
 
-      // Allow selecting password text on tap
-      document
-        .getElementById("wifiPassword")
-        .addEventListener("click", function () {
-          const range = document.createRange();
-          range.selectNodeContents(this);
-          const selection = window.getSelection();
-          selection.removeAllRanges();
-          selection.addRange(range);
+        document.getElementById("heroImg").src = CONFIG.roomImage;
+        document.getElementById("heroImg").alt = "Room at " + CONFIG.hotelName;
+        document.title = CONFIG.hotelName + " · Guest Guide";
+
+        const tel = "tel:" + CONFIG.phoneMobile;
+        const wa = "https://wa.me/" + CONFIG.whatsapp +
+          "?text=" + encodeURIComponent("Hi " + CONFIG.hotelName + ", ");
+        const mapQ = encodeURIComponent(CONFIG.mapsQuery);
+        const dir = "https://www.google.com/maps/dir/?api=1&destination=" + mapQ;
+
+        document.getElementById("qCall").href = tel;
+        document.getElementById("qWa").href = wa;
+        document.getElementById("qDir").href = dir;
+        document.getElementById("dirBtn").href = dir;
+        document.getElementById("mapFrame").src =
+          "https://www.google.com/maps?q=" + mapQ + "&output=embed";
+
+        document.getElementById("svcRoom").href = tel;
+        document.getElementById("svcHouse").href = tel;
+        document.getElementById("svcCheckout").href = tel;
+        document.getElementById("svcGuide").href = wa;
+        document.getElementById("reviewsBtn").href = CONFIG.reviewsUrl;
+
+        const nb = document.getElementById("nearby");
+        nb.innerHTML = "";
+        CONFIG.nearby.forEach((p) => {
+          const a = document.createElement("a");
+          a.href = "https://www.google.com/maps/search/?api=1&query=" +
+            encodeURIComponent(p.query);
+          a.target = "_blank";
+          a.rel = "noopener";
+          a.innerHTML = '<div class="ic">' + p.icon +
+            '</div><span class="nm">' + p.name + "</span>";
+          nb.appendChild(a);
         });
+      }
+
+      function renderDynamic() {
+        const t = I18N[lang];
+
+        const am = document.getElementById("amenities");
+        am.innerHTML = "";
+        AMENITY_ORDER.forEach((key) => {
+          const d = document.createElement("div");
+          d.className = "amenity";
+          d.innerHTML = '<div class="ic">' + AMENITY_ICONS[key] +
+            '</div><div class="nm">' + t.amenity[key] + "</div>";
+          am.appendChild(d);
+        });
+
+        const rl = document.getElementById("rules");
+        rl.innerHTML = "";
+        t.rules.forEach((txt, i) => {
+          const li = document.createElement("li");
+          li.innerHTML = '<span class="ic">' + (RULE_ICONS[i] || "•") +
+            '</span><span>' + txt + "</span>";
+          rl.appendChild(li);
+        });
+
+        const emg = document.getElementById("emergency");
+        emg.innerHTML = "";
+        const items = [
+          { ic: "🚓", t: t.emg.police, n: "100", tel: "100" },
+          { ic: "🚑", t: t.emg.ambulance, n: "108", tel: "108" },
+          { ic: "🔥", t: t.emg.fire, n: "101", tel: "101" },
+          { ic: "🏨", t: t.reception, n: "", tel: CONFIG.phoneMobile },
+        ];
+        items.forEach((it) => {
+          const a = document.createElement("a");
+          a.className = "emg";
+          a.href = "tel:" + it.tel;
+          a.innerHTML = '<span class="ic">' + it.ic +
+            '</span><span class="t"><b>' + it.t + "</b><span>" +
+            (it.n || CONFIG.phoneMobile) + "</span></span>";
+          emg.appendChild(a);
+        });
+
+        renderRequests();
+      }
+
+      /* ================= Quick requests ================= */
+
+      function waLink(text) {
+        return (
+          "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(text)
+        );
+      }
+
+      function renderRequests() {
+        const t = I18N[lang];
+        const grid = document.getElementById("reqGrid");
+        grid.innerHTML = "";
+        CONFIG.requests.forEach((r) => {
+          const label = (t.req && t.req[r.key]) || r.key;
+          const a = document.createElement("a");
+          a.className = "req";
+          a.target = "_blank";
+          a.rel = "noopener";
+          a.href = waLink(
+            "Hi " + CONFIG.hotelName + ", " + t.req_intro + ": " + label + "."
+          );
+          a.innerHTML =
+            '<div class="ic">' + r.icon + '</div><div class="nm">' + label + "</div>";
+          grid.appendChild(a);
+        });
+      }
+
+      function applyLang() {
+        const t = I18N[lang];
+        document.documentElement.lang = lang;
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (t[key] != null) el.textContent = t[key];
+        });
+        const open = document.getElementById("qrWrap").classList.contains("show");
+        document.getElementById("qrToggle").textContent = open ? t.hide_qr : t.show_qr;
+        document.getElementById("langSelect").value = lang;
+        renderDynamic();
+      }
+
+      function setLang(l) {
+        lang = I18N[l] ? l : "en";
+        store.set("cibara_lang", lang);
+        applyLang();
+      }
+
+      /* ================= Theme ================= */
+      function preferredTheme() {
+        const saved = store.get("cibara_theme", null);
+        if (saved) return saved;
+        return window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark" : "light";
+      }
+      function applyTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        document.getElementById("themeBtn").textContent =
+          theme === "dark" ? "☀️" : "🌙";
+      }
+      function toggleTheme() {
+        const next =
+          document.documentElement.getAttribute("data-theme") === "dark"
+            ? "light" : "dark";
+        store.set("cibara_theme", next);
+        applyTheme(next);
+      }
+
+      /* ================= Clipboard + toast ================= */
+      let toastTimer;
+      function toast(msg) {
+        const el = document.getElementById("toast");
+        el.textContent = "✓ " + msg;
+        el.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove("show"), 1900);
+      }
+      async function copyPassword() {
+        const text = CONFIG.wifi.password;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand("copy"); } catch {}
+          document.body.removeChild(ta);
+        }
+        toast(I18N[lang].copied);
+      }
+
+      /* ================= WiFi QR (lazy-loaded, graceful) ================= */
+      let qrLoaded = false, qrLib = null;
+      function wifiPayload() {
+        const esc = (s) => String(s).replace(/([\\;,:"])/g, "\\$1");
+        const w = CONFIG.wifi;
+        return "WIFI:T:" + (w.encryption || "WPA") + ";S:" + esc(w.ssid) +
+          ";P:" + (w.encryption === "nopass" ? "" : esc(w.password)) + ";" +
+          (w.hidden ? "H:true;" : "") + ";";
+      }
+      function loadQrLib() {
+        return new Promise((resolve, reject) => {
+          if (window.QRCode) return resolve(window.QRCode);
+          const s = document.createElement("script");
+          s.src = "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js";
+          s.onload = () => resolve(window.QRCode);
+          s.onerror = () => reject(new Error("qr load failed"));
+          document.head.appendChild(s);
+        });
+      }
+      async function buildQr() {
+        const box = document.getElementById("qrcode");
+        if (qrLoaded) return;
+        try {
+          const QR = qrLib || (qrLib = await loadQrLib());
+          box.innerHTML = "";
+          new QR(box, {
+            text: wifiPayload(),
+            width: 184,
+            height: 184,
+            correctLevel: QR.CorrectLevel.M,
+          });
+          qrLoaded = true;
+        } catch {
+          document.getElementById("qrHint").textContent = I18N[lang].qr_unavailable;
+        }
+      }
+      function toggleQr() {
+        const wrap = document.getElementById("qrWrap");
+        const open = wrap.classList.toggle("show");
+        document.getElementById("qrToggle").textContent =
+          open ? I18N[lang].hide_qr : I18N[lang].show_qr;
+        if (open) buildQr();
+      }
+
+      /* ================= Init ================= */
+      applyTheme(preferredTheme());
+      applyConfig();
+      applyLang();
+
+      document.getElementById("themeBtn").addEventListener("click", toggleTheme);
+      document.getElementById("langSelect").addEventListener("change", (e) =>
+        setLang(e.target.value)
+      );
+      document.getElementById("copyPass").addEventListener("click", copyPassword);
+      document.getElementById("qrToggle").addEventListener("click", toggleQr);
+      document.getElementById("passVal").addEventListener("click", copyPassword);
     </script>
   </body>
 </html>
